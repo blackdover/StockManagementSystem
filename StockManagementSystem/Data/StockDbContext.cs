@@ -1,68 +1,68 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StockManagementSystem.Models;
+using System.IO;
+using System.Windows.Forms;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace StockManagementSystem.Data
 {
     /// <summary>
-    /// 股票管理系统数据库上下文
+    /// 数据库初始化类
     /// </summary>
-    public class StockDbContext : DbContext
+    public class DatabaseInitializer
     {
+        private static readonly string connectionString = ConfigurationManager.ConnectionStrings["StockDbConnection"].ConnectionString;
+
         /// <summary>
-        /// 构造函数
+        /// 初始化数据库
         /// </summary>
-        public StockDbContext() : base("name=StockDbConnection")
+        public static void InitializeDatabase()
         {
-            // 初始化数据库策略
-            Database.SetInitializer(new CreateDatabaseIfNotExists<StockDbContext>());
-        }
+            try
+            {
+                // 检查数据库是否存在，不存在则创建
+                string scriptPath = Path.Combine(Application.StartupPath, "Data", "CreateDatabase.sql");
+                if (File.Exists(scriptPath))
+                {
+                    string script = File.ReadAllText(scriptPath);
+                    string[] commands = script.Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
 
-        /// <summary>
-        /// 股票信息表
-        /// </summary>
-        public DbSet<Stock> Stocks { get; set; }
+                    // 使用master数据库连接
+                    string masterConnectionString = connectionString.Replace("Initial Catalog=StockManagementDB;", "Initial Catalog=master;");
 
-        /// <summary>
-        /// 股票行情记录表
-        /// </summary>
-        public DbSet<StockPrice> StockPrices { get; set; }
-
-        /// <summary>
-        /// 模型创建配置
-        /// </summary>
-        /// <param name="modelBuilder">模型构建器</param>
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            // 配置Stock实体
-            modelBuilder.Entity<Stock>()
-                .HasKey(s => s.StockId);
-
-            modelBuilder.Entity<Stock>()
-                .Property(s => s.Code)
-                .IsRequired()
-                .HasMaxLength(10);
-
-            modelBuilder.Entity<Stock>()
-                .Property(s => s.Name)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            // 配置StockPrice实体
-            modelBuilder.Entity<StockPrice>()
-                .HasKey(p => p.PriceId);
-
-            // 配置关系：一个股票有多个行情记录
-            modelBuilder.Entity<StockPrice>()
-                .HasRequired(p => p.Stock)
-                .WithMany()
-                .HasForeignKey(p => p.StockId);
-
-            base.OnModelCreating(modelBuilder);
+                    foreach (string command in commands)
+                    {
+                        if (!string.IsNullOrWhiteSpace(command))
+                        {
+                            using (SqlConnection connection = new SqlConnection(masterConnectionString))
+                            {
+                                using (SqlCommand sqlCommand = new SqlCommand(command, connection))
+                                {
+                                    try
+                                    {
+                                        connection.Open();
+                                        sqlCommand.ExecuteNonQuery();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        // 记录日志
+                                        Console.WriteLine("执行脚本时发生错误: " + ex.Message);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("找不到数据库初始化脚本文件。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"初始化数据库时发生错误: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
-} 
+}

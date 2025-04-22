@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,14 +15,14 @@ namespace StockManagementSystem.Services
     /// </summary>
     public class StockPriceService
     {
-        private readonly StockDbContext _dbContext;
+        private readonly StockService _stockService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public StockPriceService()
         {
-            _dbContext = new StockDbContext();
+            _stockService = new StockService();
         }
 
         /// <summary>
@@ -33,9 +34,26 @@ namespace StockManagementSystem.Services
         {
             try
             {
-                stockPrice.CreateTime = DateTime.Now;
-                _dbContext.StockPrices.Add(stockPrice);
-                return _dbContext.SaveChanges() > 0;
+                string sql = @"INSERT INTO StockPrices 
+                              (StockId, TradeDate, OpenPrice, ClosePrice, HighPrice, LowPrice, Volume, Amount, ChangePercent, CreateTime) 
+                              VALUES 
+                              (@StockId, @TradeDate, @OpenPrice, @ClosePrice, @HighPrice, @LowPrice, @Volume, @Amount, @ChangePercent, @CreateTime)";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@StockId", stockPrice.StockId),
+                    new SqlParameter("@TradeDate", stockPrice.TradeDate),
+                    new SqlParameter("@OpenPrice", stockPrice.OpenPrice),
+                    new SqlParameter("@ClosePrice", stockPrice.ClosePrice),
+                    new SqlParameter("@HighPrice", stockPrice.HighPrice),
+                    new SqlParameter("@LowPrice", stockPrice.LowPrice),
+                    new SqlParameter("@Volume", stockPrice.Volume),
+                    new SqlParameter("@Amount", stockPrice.Amount),
+                    new SqlParameter("@ChangePercent", stockPrice.ChangePercent),
+                    new SqlParameter("@CreateTime", DateTime.Now)
+                };
+
+                int result = SqlHelper.ExecuteNonQuery(sql, parameters);
+                return result > 0;
             }
             catch (Exception)
             {
@@ -52,12 +70,15 @@ namespace StockManagementSystem.Services
         {
             try
             {
+                int successCount = 0;
                 foreach (var price in stockPrices)
                 {
-                    price.CreateTime = DateTime.Now;
-                    _dbContext.StockPrices.Add(price);
+                    if (AddStockPrice(price))
+                    {
+                        successCount++;
+                    }
                 }
-                return _dbContext.SaveChanges() > 0;
+                return successCount > 0;
             }
             catch (Exception)
             {
@@ -74,20 +95,29 @@ namespace StockManagementSystem.Services
         {
             try
             {
-                var existingPrice = _dbContext.StockPrices.Find(stockPrice.PriceId);
-                if (existingPrice == null)
-                    return false;
+                string sql = @"UPDATE StockPrices SET 
+                               OpenPrice = @OpenPrice, 
+                               ClosePrice = @ClosePrice, 
+                               HighPrice = @HighPrice, 
+                               LowPrice = @LowPrice, 
+                               Volume = @Volume, 
+                               Amount = @Amount, 
+                               ChangePercent = @ChangePercent
+                               WHERE PriceId = @PriceId";
 
-                // 更新属性
-                existingPrice.OpenPrice = stockPrice.OpenPrice;
-                existingPrice.ClosePrice = stockPrice.ClosePrice;
-                existingPrice.HighPrice = stockPrice.HighPrice;
-                existingPrice.LowPrice = stockPrice.LowPrice;
-                existingPrice.Volume = stockPrice.Volume;
-                existingPrice.Amount = stockPrice.Amount;
-                existingPrice.ChangePercent = stockPrice.ChangePercent;
+                SqlParameter[] parameters = {
+                    new SqlParameter("@PriceId", stockPrice.PriceId),
+                    new SqlParameter("@OpenPrice", stockPrice.OpenPrice),
+                    new SqlParameter("@ClosePrice", stockPrice.ClosePrice),
+                    new SqlParameter("@HighPrice", stockPrice.HighPrice),
+                    new SqlParameter("@LowPrice", stockPrice.LowPrice),
+                    new SqlParameter("@Volume", stockPrice.Volume),
+                    new SqlParameter("@Amount", stockPrice.Amount),
+                    new SqlParameter("@ChangePercent", stockPrice.ChangePercent)
+                };
 
-                return _dbContext.SaveChanges() > 0;
+                int result = SqlHelper.ExecuteNonQuery(sql, parameters);
+                return result > 0;
             }
             catch (Exception)
             {
@@ -104,12 +134,11 @@ namespace StockManagementSystem.Services
         {
             try
             {
-                var price = _dbContext.StockPrices.Find(priceId);
-                if (price == null)
-                    return false;
+                string sql = "DELETE FROM StockPrices WHERE PriceId = @PriceId";
+                SqlParameter parameter = new SqlParameter("@PriceId", priceId);
 
-                _dbContext.StockPrices.Remove(price);
-                return _dbContext.SaveChanges() > 0;
+                int result = SqlHelper.ExecuteNonQuery(sql, parameter);
+                return result > 0;
             }
             catch (Exception)
             {
@@ -124,10 +153,26 @@ namespace StockManagementSystem.Services
         /// <returns>行情记录列表</returns>
         public List<StockPrice> GetStockPricesByStockId(int stockId)
         {
-            return _dbContext.StockPrices
-                .Where(p => p.StockId == stockId)
-                .OrderByDescending(p => p.TradeDate)
-                .ToList();
+            try
+            {
+                string sql = "SELECT * FROM StockPrices WHERE StockId = @StockId ORDER BY TradeDate DESC";
+                SqlParameter parameter = new SqlParameter("@StockId", stockId);
+
+                DataTable dt = SqlHelper.ExecuteQuery(sql, parameter);
+                List<StockPrice> prices = ConvertToStockPriceList(dt);
+
+                // 加载关联的Stock对象
+                foreach (var price in prices)
+                {
+                    price.Stock = _stockService.GetStockById(stockId);
+                }
+
+                return prices;
+            }
+            catch (Exception)
+            {
+                return new List<StockPrice>();
+            }
         }
 
         /// <summary>
@@ -139,10 +184,98 @@ namespace StockManagementSystem.Services
         /// <returns>行情记录列表</returns>
         public List<StockPrice> GetStockPricesByDateRange(int stockId, DateTime startDate, DateTime endDate)
         {
-            return _dbContext.StockPrices
-                .Where(p => p.StockId == stockId && p.TradeDate >= startDate && p.TradeDate <= endDate)
-                .OrderBy(p => p.TradeDate)
-                .ToList();
+            try
+            {
+                string sql = "SELECT * FROM StockPrices WHERE StockId = @StockId AND TradeDate >= @StartDate AND TradeDate <= @EndDate ORDER BY TradeDate";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@StockId", stockId),
+                    new SqlParameter("@StartDate", startDate.Date),
+                    new SqlParameter("@EndDate", endDate.Date)
+                };
+
+                DataTable dt = SqlHelper.ExecuteQuery(sql, parameters);
+                List<StockPrice> prices = ConvertToStockPriceList(dt);
+
+                // 加载关联的Stock对象
+                foreach (var price in prices)
+                {
+                    price.Stock = _stockService.GetStockById(stockId);
+                }
+
+                return prices;
+            }
+            catch (Exception)
+            {
+                return new List<StockPrice>();
+            }
+        }
+
+        /// <summary>
+        /// 查询股票行情记录
+        /// </summary>
+        /// <param name="stockId">股票ID，传入null表示查询所有股票</param>
+        /// <param name="startDate">开始日期</param>
+        /// <param name="endDate">结束日期</param>
+        /// <returns>行情记录列表</returns>
+        public List<StockPrice> GetStockPrices(int? stockId, DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                string sql;
+                SqlParameter[] parameters;
+
+                if (stockId.HasValue && stockId.Value > 0)
+                {
+                    // 查询特定股票
+                    sql = "SELECT p.*, s.Code, s.Name FROM StockPrices p " +
+                          "JOIN Stocks s ON p.StockId = s.StockId " +
+                          "WHERE p.StockId = @StockId AND p.TradeDate >= @StartDate AND p.TradeDate <= @EndDate " +
+                          "ORDER BY p.TradeDate DESC";
+
+                    parameters = new SqlParameter[] {
+                        new SqlParameter("@StockId", stockId.Value),
+                        new SqlParameter("@StartDate", startDate.Date),
+                        new SqlParameter("@EndDate", endDate.Date)
+                    };
+                }
+                else
+                {
+                    // 查询所有股票
+                    sql = "SELECT p.*, s.Code, s.Name FROM StockPrices p " +
+                          "JOIN Stocks s ON p.StockId = s.StockId " +
+                          "WHERE p.TradeDate >= @StartDate AND p.TradeDate <= @EndDate " +
+                          "ORDER BY p.TradeDate DESC, s.Code";
+
+                    parameters = new SqlParameter[] {
+                        new SqlParameter("@StartDate", startDate.Date),
+                        new SqlParameter("@EndDate", endDate.Date)
+                    };
+                }
+
+                DataTable dt = SqlHelper.ExecuteQuery(sql, parameters);
+                List<StockPrice> prices = new List<StockPrice>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    StockPrice price = ConvertToStockPrice(row);
+                    price.Stock = new Stock
+                    {
+                        StockId = Convert.ToInt32(row["StockId"]),
+                        Code = row["Code"].ToString(),
+                        Name = row["Name"].ToString()
+                    };
+                    prices.Add(price);
+                }
+
+                return prices;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"查询股票行情发生错误: {ex.Message}", "错误",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                return new List<StockPrice>();
+            }
         }
 
         /// <summary>
@@ -152,11 +285,43 @@ namespace StockManagementSystem.Services
         /// <returns>行情记录列表</returns>
         public List<StockPrice> GetStockPricesByDate(DateTime date)
         {
-            return _dbContext.StockPrices
-                .Where(p => DbFunctions.TruncateTime(p.TradeDate) == DbFunctions.TruncateTime(date))
-                .Include(p => p.Stock)
-                .OrderBy(p => p.Stock.Code)
-                .ToList();
+            try
+            {
+                string sql = @"SELECT sp.*, s.Code, s.Name, s.Type, s.Industry, s.ListingDate, s.Description, s.CreateTime, s.UpdateTime 
+                              FROM StockPrices sp
+                              INNER JOIN Stocks s ON sp.StockId = s.StockId
+                              WHERE CONVERT(date, sp.TradeDate) = @TradeDate
+                              ORDER BY s.Code";
+
+                SqlParameter parameter = new SqlParameter("@TradeDate", date.Date);
+
+                DataTable dt = SqlHelper.ExecuteQuery(sql, parameter);
+                List<StockPrice> prices = new List<StockPrice>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    StockPrice price = ConvertToStockPrice(row);
+                    price.Stock = new Stock
+                    {
+                        StockId = Convert.ToInt32(row["StockId"]),
+                        Code = row["Code"].ToString(),
+                        Name = row["Name"].ToString(),
+                        Type = row["Type"] == DBNull.Value ? null : row["Type"].ToString(),
+                        Industry = row["Industry"] == DBNull.Value ? null : row["Industry"].ToString(),
+                        ListingDate = Convert.ToDateTime(row["ListingDate"]),
+                        Description = row["Description"] == DBNull.Value ? null : row["Description"].ToString(),
+                        CreateTime = Convert.ToDateTime(row["CreateTime"]),
+                        UpdateTime = Convert.ToDateTime(row["UpdateTime"])
+                    };
+                    prices.Add(price);
+                }
+
+                return prices;
+            }
+            catch (Exception)
+            {
+                return new List<StockPrice>();
+            }
         }
 
         /// <summary>
@@ -184,7 +349,7 @@ namespace StockManagementSystem.Services
 
             long totalVolume = prices.Sum(p => p.Volume);
             decimal totalAmount = prices.Sum(p => p.Amount);
-            decimal avgVolume = (decimal)prices.Average(p => p.Volume);
+            decimal avgVolume = prices.Count > 0 ? (decimal)prices.Average(p => (double)p.Volume) : 0;
 
             return new PriceFluctuationStatistics
             {
@@ -204,16 +369,50 @@ namespace StockManagementSystem.Services
         }
 
         /// <summary>
+        /// 将DataRow转换为StockPrice对象
+        /// </summary>
+        private StockPrice ConvertToStockPrice(DataRow row)
+        {
+            return new StockPrice
+            {
+                PriceId = Convert.ToInt32(row["PriceId"]),
+                StockId = Convert.ToInt32(row["StockId"]),
+                TradeDate = Convert.ToDateTime(row["TradeDate"]),
+                OpenPrice = Convert.ToDecimal(row["OpenPrice"]),
+                ClosePrice = Convert.ToDecimal(row["ClosePrice"]),
+                HighPrice = Convert.ToDecimal(row["HighPrice"]),
+                LowPrice = Convert.ToDecimal(row["LowPrice"]),
+                Volume = Convert.ToInt64(row["Volume"]),
+                Amount = Convert.ToDecimal(row["Amount"]),
+                ChangePercent = Convert.ToDecimal(row["ChangePercent"]),
+                CreateTime = Convert.ToDateTime(row["CreateTime"])
+            };
+        }
+
+        /// <summary>
+        /// 将DataTable转换为StockPrice列表
+        /// </summary>
+        private List<StockPrice> ConvertToStockPriceList(DataTable dt)
+        {
+            List<StockPrice> prices = new List<StockPrice>();
+            foreach (DataRow row in dt.Rows)
+            {
+                prices.Add(ConvertToStockPrice(row));
+            }
+            return prices;
+        }
+
+        /// <summary>
         /// 释放资源
         /// </summary>
         public void Dispose()
         {
-            _dbContext.Dispose();
+            // 无需释放资源
         }
     }
 
     /// <summary>
-    /// 股票价格波动统计信息类
+    /// 价格波动统计类
     /// </summary>
     public class PriceFluctuationStatistics
     {
@@ -223,7 +422,7 @@ namespace StockManagementSystem.Services
         public int StockId { get; set; }
 
         /// <summary>
-        /// 起始日期
+        /// 开始日期
         /// </summary>
         public DateTime StartDate { get; set; }
 
@@ -253,12 +452,12 @@ namespace StockManagementSystem.Services
         public decimal PriceRange { get; set; }
 
         /// <summary>
-        /// 价格波动范围百分比
+        /// 价格波动百分比
         /// </summary>
         public decimal PriceRangePercent { get; set; }
 
         /// <summary>
-        /// 总体涨跌幅
+        /// 总体涨跌百分比
         /// </summary>
         public decimal OverallChangePercent { get; set; }
 
@@ -277,4 +476,4 @@ namespace StockManagementSystem.Services
         /// </summary>
         public decimal AverageVolume { get; set; }
     }
-} 
+}

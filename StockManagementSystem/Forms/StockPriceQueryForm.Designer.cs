@@ -28,179 +28,199 @@ namespace StockManagementSystem.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnAnalyze = new System.Windows.Forms.Button();
-            this.btnExport = new System.Windows.Forms.Button();
-            this.btnQuery = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dateTimePickerStart = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.cboStock = new System.Windows.Forms.ComboBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.dateTimePickerStart = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
             this.dataGridViewPrices = new System.Windows.Forms.DataGridView();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.lblResultCount = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.lblResultCount = new System.Windows.Forms.Label();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnExport = new System.Windows.Forms.Button();
+            this.panelStatistics = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPrices)).BeginInit();
-            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.btnAnalyze);
-            this.panel1.Controls.Add(this.btnExport);
-            this.panel1.Controls.Add(this.btnQuery);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.dateTimePickerEnd);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.dateTimePickerStart);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.cboStock);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(884, 100);
-            this.panel1.TabIndex = 0;
-            // 
-            // btnAnalyze
-            // 
-            this.btnAnalyze.Location = new System.Drawing.Point(616, 65);
-            this.btnAnalyze.Name = "btnAnalyze";
-            this.btnAnalyze.Size = new System.Drawing.Size(75, 23);
-            this.btnAnalyze.TabIndex = 8;
-            this.btnAnalyze.Text = "统计分析";
-            this.btnAnalyze.UseVisualStyleBackColor = true;
-            this.btnAnalyze.Click += new System.EventHandler(this.btnAnalyze_Click);
-            // 
-            // btnExport
-            // 
-            this.btnExport.Location = new System.Drawing.Point(697, 65);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(75, 23);
-            this.btnExport.TabIndex = 7;
-            this.btnExport.Text = "导出数据";
-            this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
-            // 
-            // btnQuery
-            // 
-            this.btnQuery.Location = new System.Drawing.Point(535, 65);
-            this.btnQuery.Name = "btnQuery";
-            this.btnQuery.Size = new System.Drawing.Size(75, 23);
-            this.btnQuery.TabIndex = 6;
-            this.btnQuery.Text = "查询";
-            this.btnQuery.UseVisualStyleBackColor = true;
-            this.btnQuery.Click += new System.EventHandler(this.btnQuery_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(349, 43);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "结束日期：";
-            // 
-            // dateTimePickerEnd
-            // 
-            this.dateTimePickerEnd.Location = new System.Drawing.Point(416, 39);
-            this.dateTimePickerEnd.Name = "dateTimePickerEnd";
-            this.dateTimePickerEnd.Size = new System.Drawing.Size(155, 21);
-            this.dateTimePickerEnd.TabIndex = 4;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(348, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "开始日期：";
-            // 
-            // dateTimePickerStart
-            // 
-            this.dateTimePickerStart.Location = new System.Drawing.Point(416, 12);
-            this.dateTimePickerStart.Name = "dateTimePickerStart";
-            this.dateTimePickerStart.Size = new System.Drawing.Size(155, 21);
-            this.dateTimePickerStart.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(41, 16);
+            this.label1.Location = new System.Drawing.Point(18, 22);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 12);
-            this.label1.TabIndex = 1;
+            this.label1.Size = new System.Drawing.Size(98, 18);
+            this.label1.TabIndex = 0;
             this.label1.Text = "选择股票：";
             // 
             // cboStock
             // 
             this.cboStock.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboStock.FormattingEnabled = true;
-            this.cboStock.Location = new System.Drawing.Point(120, 13);
+            this.cboStock.Location = new System.Drawing.Point(124, 18);
+            this.cboStock.Margin = new System.Windows.Forms.Padding(4);
             this.cboStock.Name = "cboStock";
-            this.cboStock.Size = new System.Drawing.Size(177, 20);
-            this.cboStock.TabIndex = 0;
+            this.cboStock.Size = new System.Drawing.Size(224, 26);
+            this.cboStock.TabIndex = 1;
+            this.cboStock.SelectedIndexChanged += new System.EventHandler(this.cboStock_SelectedIndexChanged);
             // 
-            // panel2
+            // label2
             // 
-            this.panel2.Controls.Add(this.dataGridViewPrices);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 100);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(884, 439);
-            this.panel2.TabIndex = 1;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(375, 22);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(98, 18);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "开始日期：";
+            // 
+            // dateTimePickerStart
+            // 
+            this.dateTimePickerStart.Location = new System.Drawing.Point(482, 18);
+            this.dateTimePickerStart.Margin = new System.Windows.Forms.Padding(4);
+            this.dateTimePickerStart.Name = "dateTimePickerStart";
+            this.dateTimePickerStart.Size = new System.Drawing.Size(170, 28);
+            this.dateTimePickerStart.TabIndex = 3;
+            this.dateTimePickerStart.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(663, 22);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(98, 18);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "结束日期：";
+            // 
+            // dateTimePickerEnd
+            // 
+            this.dateTimePickerEnd.Location = new System.Drawing.Point(770, 18);
+            this.dateTimePickerEnd.Margin = new System.Windows.Forms.Padding(4);
+            this.dateTimePickerEnd.Name = "dateTimePickerEnd";
+            this.dateTimePickerEnd.Size = new System.Drawing.Size(170, 28);
+            this.dateTimePickerEnd.TabIndex = 5;
+            this.dateTimePickerEnd.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
             // 
             // dataGridViewPrices
             // 
             this.dataGridViewPrices.AllowUserToAddRows = false;
             this.dataGridViewPrices.AllowUserToDeleteRows = false;
+            this.dataGridViewPrices.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewPrices.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridViewPrices.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewPrices.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewPrices.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewPrices.Location = new System.Drawing.Point(18, 135);
+            this.dataGridViewPrices.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewPrices.MultiSelect = false;
             this.dataGridViewPrices.Name = "dataGridViewPrices";
             this.dataGridViewPrices.ReadOnly = true;
+            this.dataGridViewPrices.RowHeadersWidth = 62;
             this.dataGridViewPrices.RowTemplate.Height = 23;
-            this.dataGridViewPrices.Size = new System.Drawing.Size(884, 439);
-            this.dataGridViewPrices.TabIndex = 0;
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblResultCount});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 539);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(884, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
+            this.dataGridViewPrices.Size = new System.Drawing.Size(1164, 435);
+            this.dataGridViewPrices.TabIndex = 9;
+            this.dataGridViewPrices.SelectionChanged += new System.EventHandler(this.dataGridViewPrices_SelectionChanged);
             // 
             // lblResultCount
             // 
+            this.lblResultCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblResultCount.AutoSize = true;
+            this.lblResultCount.Location = new System.Drawing.Point(750, 80);
+            this.lblResultCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblResultCount.Name = "lblResultCount";
-            this.lblResultCount.Size = new System.Drawing.Size(44, 17);
-            this.lblResultCount.Text = "共0条";
+            this.lblResultCount.Size = new System.Drawing.Size(80, 18);
+            this.lblResultCount.TabIndex = 10;
+            this.lblResultCount.Text = "查询结果";
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnAdd.Location = new System.Drawing.Point(61, 67);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(110, 45);
+            this.btnAdd.TabIndex = 12;
+            this.btnAdd.Text = "添加行情";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnEdit.Enabled = false;
+            this.btnEdit.Location = new System.Drawing.Point(219, 67);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(110, 45);
+            this.btnEdit.TabIndex = 10;
+            this.btnEdit.Text = "编辑行情";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnDelete.Enabled = false;
+            this.btnDelete.Location = new System.Drawing.Point(378, 67);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(110, 45);
+            this.btnDelete.TabIndex = 11;
+            this.btnDelete.Text = "删除行情";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnExport
+            // 
+            this.btnExport.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnExport.Location = new System.Drawing.Point(542, 67);
+            this.btnExport.Margin = new System.Windows.Forms.Padding(4);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(110, 45);
+            this.btnExport.TabIndex = 8;
+            this.btnExport.Text = "导出数据";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // panelStatistics
+            // 
+            this.panelStatistics.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelStatistics.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelStatistics.Location = new System.Drawing.Point(18, 584);
+            this.panelStatistics.Margin = new System.Windows.Forms.Padding(4);
+            this.panelStatistics.Name = "panelStatistics";
+            this.panelStatistics.Padding = new System.Windows.Forms.Padding(15);
+            this.panelStatistics.Size = new System.Drawing.Size(1163, 289);
+            this.panelStatistics.TabIndex = 12;
             // 
             // StockPriceQueryForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 561);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.statusStrip1);
+            this.ClientSize = new System.Drawing.Size(1200, 886);
+            this.Controls.Add(this.btnExport);
+            this.Controls.Add(this.btnEdit);
+            this.Controls.Add(this.btnDelete);
+            this.Controls.Add(this.panelStatistics);
+            this.Controls.Add(this.lblResultCount);
+            this.Controls.Add(this.btnAdd);
+            this.Controls.Add(this.dataGridViewPrices);
+            this.Controls.Add(this.dateTimePickerEnd);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.dateTimePickerStart);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cboStock);
+            this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(1213, 917);
             this.Name = "StockPriceQueryForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "股票行情查询";
             this.Load += new System.EventHandler(this.StockPriceQueryForm_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPrices)).EndInit();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,19 +228,18 @@ namespace StockManagementSystem.Forms
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cboStock;
-        private System.Windows.Forms.Button btnAnalyze;
-        private System.Windows.Forms.Button btnExport;
-        private System.Windows.Forms.Button btnQuery;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dateTimePickerEnd;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker dateTimePickerStart;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DateTimePicker dateTimePickerEnd;
         private System.Windows.Forms.DataGridView dataGridViewPrices;
-        private System.Windows.Forms.ToolStripStatusLabel lblResultCount;
+        private System.Windows.Forms.Label lblResultCount;
+        private System.Windows.Forms.Button btnExport;
+        private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Panel panelStatistics;
     }
-} 
+}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using StockManagementSystem.Data;
 
 namespace StockManagementSystem
 {
@@ -14,6 +15,12 @@ namespace StockManagementSystem
         [STAThread]
         static void Main()
         {
+            // 初始化数据库连接字符串
+            SqlHelper.InitConnString("StockDbConnection");
+
+            // 初始化数据库（如果需要）
+            DatabaseInitializer.InitializeDatabase();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

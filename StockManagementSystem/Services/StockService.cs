@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,14 +15,11 @@ namespace StockManagementSystem.Services
     /// </summary>
     public class StockService
     {
-        private readonly StockDbContext _dbContext;
-
         /// <summary>
         /// 构造函数
         /// </summary>
         public StockService()
         {
-            _dbContext = new StockDbContext();
         }
 
         /// <summary>
@@ -33,10 +31,22 @@ namespace StockManagementSystem.Services
         {
             try
             {
-                stock.CreateTime = DateTime.Now;
-                stock.UpdateTime = DateTime.Now;
-                _dbContext.Stocks.Add(stock);
-                return _dbContext.SaveChanges() > 0;
+                string sql = @"INSERT INTO Stocks (Code, Name, Type, Industry, ListingDate, Description, CreateTime, UpdateTime)
+                              VALUES (@Code, @Name, @Type, @Industry, @ListingDate, @Description, @CreateTime, @UpdateTime)";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@Code", stock.Code),
+                    new SqlParameter("@Name", stock.Name),
+                    new SqlParameter("@Type", stock.Type ?? (object)DBNull.Value),
+                    new SqlParameter("@Industry", stock.Industry ?? (object)DBNull.Value),
+                    new SqlParameter("@ListingDate", stock.ListingDate),
+                    new SqlParameter("@Description", stock.Description ?? (object)DBNull.Value),
+                    new SqlParameter("@CreateTime", DateTime.Now),
+                    new SqlParameter("@UpdateTime", DateTime.Now)
+                };
+
+                int result = SqlHelper.ExecuteNonQuery(sql, parameters);
+                return result > 0;
             }
             catch (Exception)
             {
@@ -53,20 +63,29 @@ namespace StockManagementSystem.Services
         {
             try
             {
-                var existingStock = _dbContext.Stocks.Find(stock.StockId);
-                if (existingStock == null)
-                    return false;
+                string sql = @"UPDATE Stocks SET 
+                               Code = @Code, 
+                               Name = @Name, 
+                               Type = @Type, 
+                               Industry = @Industry, 
+                               ListingDate = @ListingDate, 
+                               Description = @Description, 
+                               UpdateTime = @UpdateTime
+                               WHERE StockId = @StockId";
 
-                // 更新属性
-                existingStock.Code = stock.Code;
-                existingStock.Name = stock.Name;
-                existingStock.Type = stock.Type;
-                existingStock.Industry = stock.Industry;
-                existingStock.ListingDate = stock.ListingDate;
-                existingStock.Description = stock.Description;
-                existingStock.UpdateTime = DateTime.Now;
+                SqlParameter[] parameters = {
+                    new SqlParameter("@StockId", stock.StockId),
+                    new SqlParameter("@Code", stock.Code),
+                    new SqlParameter("@Name", stock.Name),
+                    new SqlParameter("@Type", stock.Type ?? (object)DBNull.Value),
+                    new SqlParameter("@Industry", stock.Industry ?? (object)DBNull.Value),
+                    new SqlParameter("@ListingDate", stock.ListingDate),
+                    new SqlParameter("@Description", stock.Description ?? (object)DBNull.Value),
+                    new SqlParameter("@UpdateTime", DateTime.Now)
+                };
 
-                return _dbContext.SaveChanges() > 0;
+                int result = SqlHelper.ExecuteNonQuery(sql, parameters);
+                return result > 0;
             }
             catch (Exception)
             {
@@ -83,12 +102,11 @@ namespace StockManagementSystem.Services
         {
             try
             {
-                var stock = _dbContext.Stocks.Find(stockId);
-                if (stock == null)
-                    return false;
+                string sql = "DELETE FROM Stocks WHERE StockId = @StockId";
+                SqlParameter parameter = new SqlParameter("@StockId", stockId);
 
-                _dbContext.Stocks.Remove(stock);
-                return _dbContext.SaveChanges() > 0;
+                int result = SqlHelper.ExecuteNonQuery(sql, parameter);
+                return result > 0;
             }
             catch (Exception)
             {
@@ -102,7 +120,17 @@ namespace StockManagementSystem.Services
         /// <returns>股票信息列表</returns>
         public List<Stock> GetAllStocks()
         {
-            return _dbContext.Stocks.ToList();
+            try
+            {
+                string sql = "SELECT * FROM Stocks";
+                DataTable dt = SqlHelper.ExecuteQuery(sql);
+
+                return ConvertToStockList(dt);
+            }
+            catch (Exception)
+            {
+                return new List<Stock>();
+            }
         }
 
         /// <summary>
@@ -112,7 +140,22 @@ namespace StockManagementSystem.Services
         /// <returns>股票信息对象</returns>
         public Stock GetStockById(int stockId)
         {
-            return _dbContext.Stocks.Find(stockId);
+            try
+            {
+                string sql = "SELECT * FROM Stocks WHERE StockId = @StockId";
+                SqlParameter parameter = new SqlParameter("@StockId", stockId);
+
+                DataTable dt = SqlHelper.ExecuteQuery(sql, parameter);
+                if (dt.Rows.Count > 0)
+                {
+                    return ConvertToStock(dt.Rows[0]);
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -122,7 +165,22 @@ namespace StockManagementSystem.Services
         /// <returns>股票信息对象</returns>
         public Stock GetStockByCode(string code)
         {
-            return _dbContext.Stocks.FirstOrDefault(s => s.Code == code);
+            try
+            {
+                string sql = "SELECT * FROM Stocks WHERE Code = @Code";
+                SqlParameter parameter = new SqlParameter("@Code", code);
+
+                DataTable dt = SqlHelper.ExecuteQuery(sql, parameter);
+                if (dt.Rows.Count > 0)
+                {
+                    return ConvertToStock(dt.Rows[0]);
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -132,7 +190,18 @@ namespace StockManagementSystem.Services
         /// <returns>股票信息列表</returns>
         public List<Stock> GetStocksByName(string name)
         {
-            return _dbContext.Stocks.Where(s => s.Name.Contains(name)).ToList();
+            try
+            {
+                string sql = "SELECT * FROM Stocks WHERE Name LIKE @Name";
+                SqlParameter parameter = new SqlParameter("@Name", "%" + name + "%");
+
+                DataTable dt = SqlHelper.ExecuteQuery(sql, parameter);
+                return ConvertToStockList(dt);
+            }
+            catch (Exception)
+            {
+                return new List<Stock>();
+            }
         }
 
         /// <summary>
@@ -142,7 +211,50 @@ namespace StockManagementSystem.Services
         /// <returns>股票信息列表</returns>
         public List<Stock> GetStocksByIndustry(string industry)
         {
-            return _dbContext.Stocks.Where(s => s.Industry == industry).ToList();
+            try
+            {
+                string sql = "SELECT * FROM Stocks WHERE Industry = @Industry";
+                SqlParameter parameter = new SqlParameter("@Industry", industry);
+
+                DataTable dt = SqlHelper.ExecuteQuery(sql, parameter);
+                return ConvertToStockList(dt);
+            }
+            catch (Exception)
+            {
+                return new List<Stock>();
+            }
+        }
+
+        /// <summary>
+        /// 将DataRow转换为Stock对象
+        /// </summary>
+        private Stock ConvertToStock(DataRow row)
+        {
+            return new Stock
+            {
+                StockId = Convert.ToInt32(row["StockId"]),
+                Code = row["Code"].ToString(),
+                Name = row["Name"].ToString(),
+                Type = row["Type"] == DBNull.Value ? null : row["Type"].ToString(),
+                Industry = row["Industry"] == DBNull.Value ? null : row["Industry"].ToString(),
+                ListingDate = Convert.ToDateTime(row["ListingDate"]),
+                Description = row["Description"] == DBNull.Value ? null : row["Description"].ToString(),
+                CreateTime = Convert.ToDateTime(row["CreateTime"]),
+                UpdateTime = Convert.ToDateTime(row["UpdateTime"])
+            };
+        }
+
+        /// <summary>
+        /// 将DataTable转换为Stock列表
+        /// </summary>
+        private List<Stock> ConvertToStockList(DataTable dt)
+        {
+            List<Stock> stocks = new List<Stock>();
+            foreach (DataRow row in dt.Rows)
+            {
+                stocks.Add(ConvertToStock(row));
+            }
+            return stocks;
         }
 
         /// <summary>
@@ -150,7 +262,7 @@ namespace StockManagementSystem.Services
         /// </summary>
         public void Dispose()
         {
-            _dbContext.Dispose();
+            // 无需释放资源，因为SqlHelper是静态类
         }
     }
-} 
+}

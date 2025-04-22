@@ -18,6 +18,41 @@ namespace StockManagementSystem.Forms
         private Stock _stock;
         private bool _isAdd;
 
+        // 预定义的股票类型选项
+        private readonly string[] stockTypes = new string[]
+        {
+            "A股",
+            "B股",
+            "H股",
+            "N股",
+            "S股",
+            "创业板",
+            "科创板",
+            "新三板"
+        };
+
+        // 预定义的行业选项
+        private readonly string[] industries = new string[]
+        {
+            "金融",
+            "科技",
+            "医药",
+            "房地产",
+            "能源",
+            "消费品",
+            "制造业",
+            "电信",
+            "互联网",
+            "汽车",
+            "医疗",
+            "教育",
+            "餐饮",
+            "零售",
+            "传媒",
+            "娱乐",
+            "其他"
+        };
+
         public StockEditForm(StockService stockService, Stock stock = null)
         {
             InitializeComponent();
@@ -31,13 +66,40 @@ namespace StockManagementSystem.Forms
             // 设置窗体标题
             this.Text = _isAdd ? "添加股票信息" : "编辑股票信息";
 
+            // 填充股票类型下拉框
+            cboType.Items.Clear();
+            cboType.Items.AddRange(stockTypes);
+
+            // 填充行业下拉框
+            cboIndustry.Items.Clear();
+            cboIndustry.Items.AddRange(industries);
+
             // 如果是编辑，则填充现有数据
             if (!_isAdd)
             {
                 txtCode.Text = _stock.Code;
                 txtName.Text = _stock.Name;
-                txtType.Text = _stock.Type;
-                txtIndustry.Text = _stock.Industry;
+
+                // 设置股票类型下拉框选中项
+                if (!string.IsNullOrEmpty(_stock.Type))
+                {
+                    int typeIndex = Array.IndexOf(stockTypes, _stock.Type);
+                    if (typeIndex >= 0)
+                        cboType.SelectedIndex = typeIndex;
+                    else
+                        cboType.Text = _stock.Type; // 如果不在预定义列表中，直接显示文本
+                }
+
+                // 设置行业下拉框选中项
+                if (!string.IsNullOrEmpty(_stock.Industry))
+                {
+                    int industryIndex = Array.IndexOf(industries, _stock.Industry);
+                    if (industryIndex >= 0)
+                        cboIndustry.SelectedIndex = industryIndex;
+                    else
+                        cboIndustry.Text = _stock.Industry; // 如果不在预定义列表中，直接显示文本
+                }
+
                 dateTimePickerListingDate.Value = _stock.ListingDate;
                 txtDescription.Text = _stock.Description;
             }
@@ -68,8 +130,8 @@ namespace StockManagementSystem.Forms
             // 设置股票信息
             _stock.Code = txtCode.Text.Trim();
             _stock.Name = txtName.Text.Trim();
-            _stock.Type = txtType.Text.Trim();
-            _stock.Industry = txtIndustry.Text.Trim();
+            _stock.Type = cboType.Text.Trim();
+            _stock.Industry = cboIndustry.Text.Trim();
             _stock.ListingDate = dateTimePickerListingDate.Value;
             _stock.Description = txtDescription.Text.Trim();
 
@@ -103,4 +165,4 @@ namespace StockManagementSystem.Forms
             Close();
         }
     }
-} 
+}

@@ -70,5 +70,50 @@ namespace StockManagementSystem.Models
         /// 关联的股票对象（导航属性）
         /// </summary>
         public virtual Stock Stock { get; set; }
+
+        /// <summary>
+        /// 前一交易日收盘价（用于计算涨跌幅）
+        /// </summary>
+        public decimal PrevClosePrice { get; set; }
+
+        #region 兼容性属性
+
+        /// <summary>
+        /// 兼容性属性，映射到PriceId
+        /// </summary>
+        public int Id
+        {
+            get { return PriceId; }
+            set { PriceId = value; }
+        }
+
+        /// <summary>
+        /// 兼容性属性，映射到TradeDate
+        /// </summary>
+        public DateTime Date
+        {
+            get { return TradeDate; }
+            set { TradeDate = value; }
+        }
+
+        /// <summary>
+        /// 兼容性属性，映射到HighPrice
+        /// </summary>
+        public decimal HighestPrice
+        {
+            get { return HighPrice; }
+            set { HighPrice = value; }
+        }
+
+        /// <summary>
+        /// 兼容性属性，映射到LowPrice
+        /// </summary>
+        public decimal LowestPrice
+        {
+            get { return LowPrice; }
+            set { LowPrice = value; }
+        }
+
+        #endregion
     }
-} 
+}

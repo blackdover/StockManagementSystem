@@ -56,4 +56,4 @@ namespace StockManagementSystem.Models
         /// </summary>
         public DateTime UpdateTime { get; set; }
     }
-} 
+}

@@ -29,16 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.股票管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.添加股票ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.编辑股票ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.删除股票ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.行情管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.查看行情ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.添加行情ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonAddStock = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonEditStock = new System.Windows.Forms.ToolStripButton();
@@ -46,6 +36,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonAddPrice = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonViewPrice = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonExit = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -57,7 +48,6 @@
             this.columnHeaderIndustry = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.dataGridViewPrices = new System.Windows.Forms.DataGridView();
-            this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -67,81 +57,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPrices)).BeginInit();
             this.SuspendLayout();
             // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件ToolStripMenuItem,
-            this.股票管理ToolStripMenuItem,
-            this.行情管理ToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(984, 25);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // 文件ToolStripMenuItem
-            // 
-            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.退出ToolStripMenuItem});
-            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.文件ToolStripMenuItem.Text = "文件";
-            // 
-            // 退出ToolStripMenuItem
-            // 
-            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.退出ToolStripMenuItem.Text = "退出";
-            // 
-            // 股票管理ToolStripMenuItem
-            // 
-            this.股票管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.添加股票ToolStripMenuItem,
-            this.编辑股票ToolStripMenuItem,
-            this.删除股票ToolStripMenuItem});
-            this.股票管理ToolStripMenuItem.Name = "股票管理ToolStripMenuItem";
-            this.股票管理ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
-            this.股票管理ToolStripMenuItem.Text = "股票管理";
-            // 
-            // 添加股票ToolStripMenuItem
-            // 
-            this.添加股票ToolStripMenuItem.Name = "添加股票ToolStripMenuItem";
-            this.添加股票ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.添加股票ToolStripMenuItem.Text = "添加股票";
-            // 
-            // 编辑股票ToolStripMenuItem
-            // 
-            this.编辑股票ToolStripMenuItem.Name = "编辑股票ToolStripMenuItem";
-            this.编辑股票ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.编辑股票ToolStripMenuItem.Text = "编辑股票";
-            // 
-            // 删除股票ToolStripMenuItem
-            // 
-            this.删除股票ToolStripMenuItem.Name = "删除股票ToolStripMenuItem";
-            this.删除股票ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.删除股票ToolStripMenuItem.Text = "删除股票";
-            // 
-            // 行情管理ToolStripMenuItem
-            // 
-            this.行情管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.查看行情ToolStripMenuItem,
-            this.添加行情ToolStripMenuItem});
-            this.行情管理ToolStripMenuItem.Name = "行情管理ToolStripMenuItem";
-            this.行情管理ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
-            this.行情管理ToolStripMenuItem.Text = "行情管理";
-            // 
-            // 查看行情ToolStripMenuItem
-            // 
-            this.查看行情ToolStripMenuItem.Name = "查看行情ToolStripMenuItem";
-            this.查看行情ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.查看行情ToolStripMenuItem.Text = "查看行情";
-            // 
-            // 添加行情ToolStripMenuItem
-            // 
-            this.添加行情ToolStripMenuItem.Name = "添加行情ToolStripMenuItem";
-            this.添加行情ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.添加行情ToolStripMenuItem.Text = "添加行情";
-            // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -150,8 +65,9 @@
             this.toolStripButtonDeleteStock,
             this.toolStripSeparator1,
             this.toolStripButtonAddPrice,
-            this.toolStripButtonViewPrice});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 25);
+            this.toolStripButtonViewPrice,
+            this.toolStripButtonExit});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(984, 25);
             this.toolStrip1.TabIndex = 1;
@@ -202,6 +118,14 @@
             this.toolStripButtonViewPrice.Size = new System.Drawing.Size(60, 22);
             this.toolStripButtonViewPrice.Text = "查看行情";
             // 
+            // toolStripButtonExit
+            // 
+            this.toolStripButtonExit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButtonExit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonExit.Name = "toolStripButtonExit";
+            this.toolStripButtonExit.Size = new System.Drawing.Size(60, 22);
+            this.toolStripButtonExit.Text = "退出";
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -221,7 +145,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 50);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 25);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -232,7 +156,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridViewPrices);
-            this.splitContainer1.Size = new System.Drawing.Size(984, 489);
+            this.splitContainer1.Size = new System.Drawing.Size(984, 514);
             this.splitContainer1.SplitterDistance = 244;
             this.splitContainer1.TabIndex = 3;
             // 
@@ -296,7 +220,7 @@
             this.dataGridViewPrices.Name = "dataGridViewPrices";
             this.dataGridViewPrices.ReadOnly = true;
             this.dataGridViewPrices.RowTemplate.Height = 23;
-            this.dataGridViewPrices.Size = new System.Drawing.Size(984, 241);
+            this.dataGridViewPrices.Size = new System.Drawing.Size(984, 266);
             this.dataGridViewPrices.TabIndex = 0;
             // 
             // MainForm
@@ -307,15 +231,11 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "股票行情查看与分析管理系统";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -332,16 +252,6 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 股票管理ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 添加股票ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 编辑股票ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 删除股票ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 行情管理ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 查看行情ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 添加行情ToolStripMenuItem;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButtonAddStock;
         private System.Windows.Forms.ToolStripButton toolStripButtonEditStock;
@@ -349,6 +259,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolStripButtonAddPrice;
         private System.Windows.Forms.ToolStripButton toolStripButtonViewPrice;
+        private System.Windows.Forms.ToolStripButton toolStripButtonExit;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.SplitContainer splitContainer1;

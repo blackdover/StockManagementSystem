@@ -25,19 +25,13 @@ namespace StockManagementSystem
             _stockService = new StockService();
             _stockPriceService = new StockPriceService();
 
-            // 绑定菜单和工具栏按钮事件
-            添加股票ToolStripMenuItem.Click += btnAddStock_Click;
-            编辑股票ToolStripMenuItem.Click += btnEditStock_Click;
-            删除股票ToolStripMenuItem.Click += btnDeleteStock_Click;
-            查看行情ToolStripMenuItem.Click += btnViewStockPrice_Click;
-            添加行情ToolStripMenuItem.Click += btnAddStockPrice_Click;
-            退出ToolStripMenuItem.Click += (s, e) => Close();
-
+            // 绑定工具栏按钮事件
             toolStripButtonAddStock.Click += btnAddStock_Click;
             toolStripButtonEditStock.Click += btnEditStock_Click;
             toolStripButtonDeleteStock.Click += btnDeleteStock_Click;
             toolStripButtonViewPrice.Click += btnViewStockPrice_Click;
             toolStripButtonAddPrice.Click += btnAddStockPrice_Click;
+            toolStripButtonExit.Click += (s, e) => Close();
 
             // 绑定ListView选择事件
             listViewStocks.SelectedIndexChanged += listViewStocks_SelectedIndexChanged;

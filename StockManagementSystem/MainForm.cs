@@ -31,6 +31,8 @@ namespace StockManagementSystem
             toolStripButtonDeleteStock.Click += btnDeleteStock_Click;
             toolStripButtonViewPrice.Click += btnViewStockPrice_Click;
             toolStripButtonAddPrice.Click += btnAddStockPrice_Click;
+            toolStripButtonFilter.Click += btnStockFilter_Click;
+            toolStripButtonDataIO.Click += btnDataIO_Click;
             toolStripButtonExit.Click += (s, e) => Close();
 
             // 绑定ListView选择事件
@@ -70,6 +72,14 @@ namespace StockManagementSystem
         {
             // 初始化界面
             LoadStockData();
+
+            // 自动选择第一个股票
+            if (listViewStocks.Items.Count > 0)
+            {
+                listViewStocks.Items[0].Selected = true;
+                // 确保选中项可见
+                listViewStocks.EnsureVisible(0);
+            }
         }
 
         /// <summary>
@@ -307,6 +317,48 @@ namespace StockManagementSystem
                 if (form.ShowDialog() == DialogResult.OK && selectedStockId.HasValue)
                 {
                     DrawStockPriceChart(selectedStockId.Value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 启动股票筛选
+        /// </summary>
+        private void btnStockFilter_Click(object sender, EventArgs e)
+        {
+            using (var filterForm = new StockFilterForm())
+            {
+                if (filterForm.ShowDialog() == DialogResult.OK)
+                {
+                    // 如果用户在筛选表单中选择了股票，更新当前选中股票
+                    if (filterForm.SelectedStock != null)
+                    {
+                        // 查找并选中对应的股票
+                        foreach (ListViewItem item in listViewStocks.Items)
+                        {
+                            if (item.Tag is Stock stock && stock.StockId == filterForm.SelectedStock.StockId)
+                            {
+                                item.Selected = true;
+                                item.EnsureVisible();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 启动数据导入导出功能
+        /// </summary>
+        private void btnDataIO_Click(object sender, EventArgs e)
+        {
+            using (var dataIOForm = new DataIOForm())
+            {
+                if (dataIOForm.ShowDialog() == DialogResult.OK)
+                {
+                    // 刷新股票数据
+                    LoadStockData();
                 }
             }
         }

@@ -56,6 +56,12 @@
   <ItemGroup>
     <Compile Include="Data\StockDbContext.cs" />
     <Compile Include="Data\SqlHelper.cs" />
+    <Compile Include="Forms\DataIOForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DataIOForm.Designer.cs">
+      <DependentUpon>DataIOForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\StockEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +91,12 @@
     </Compile>
     <Compile Include="Forms\StockPriceQueryForm.Designer.cs">
       <DependentUpon>StockPriceQueryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StockFilterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StockFilterForm.Designer.cs">
+      <DependentUpon>StockFilterForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Forms\StockEditForm.resx">
       <DependentUpon>StockEditForm.cs</DependentUpon>

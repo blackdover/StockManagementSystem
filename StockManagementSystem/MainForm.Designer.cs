@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonAddStock = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonEditStock = new System.Windows.Forms.ToolStripButton();
@@ -36,6 +35,10 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonAddPrice = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonViewPrice = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonFilter = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonTechnicalAnalysis = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonDataIO = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonExit = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -59,6 +62,7 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonAddStock,
             this.toolStripButtonEditStock,
@@ -66,10 +70,15 @@
             this.toolStripSeparator1,
             this.toolStripButtonAddPrice,
             this.toolStripButtonViewPrice,
+            this.toolStripSeparator2,
+            this.toolStripButtonFilter,
+            this.toolStripButtonTechnicalAnalysis,
+            this.toolStripButtonDataIO,
             this.toolStripButtonExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(984, 25);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.toolStrip1.Size = new System.Drawing.Size(1476, 33);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -78,7 +87,7 @@
             this.toolStripButtonAddStock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonAddStock.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAddStock.Name = "toolStripButtonAddStock";
-            this.toolStripButtonAddStock.Size = new System.Drawing.Size(60, 22);
+            this.toolStripButtonAddStock.Size = new System.Drawing.Size(86, 28);
             this.toolStripButtonAddStock.Text = "添加股票";
             // 
             // toolStripButtonEditStock
@@ -86,7 +95,7 @@
             this.toolStripButtonEditStock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonEditStock.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonEditStock.Name = "toolStripButtonEditStock";
-            this.toolStripButtonEditStock.Size = new System.Drawing.Size(60, 22);
+            this.toolStripButtonEditStock.Size = new System.Drawing.Size(86, 28);
             this.toolStripButtonEditStock.Text = "编辑股票";
             // 
             // toolStripButtonDeleteStock
@@ -94,20 +103,20 @@
             this.toolStripButtonDeleteStock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonDeleteStock.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonDeleteStock.Name = "toolStripButtonDeleteStock";
-            this.toolStripButtonDeleteStock.Size = new System.Drawing.Size(60, 22);
+            this.toolStripButtonDeleteStock.Size = new System.Drawing.Size(86, 28);
             this.toolStripButtonDeleteStock.Text = "删除股票";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 33);
             // 
             // toolStripButtonAddPrice
             // 
             this.toolStripButtonAddPrice.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonAddPrice.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAddPrice.Name = "toolStripButtonAddPrice";
-            this.toolStripButtonAddPrice.Size = new System.Drawing.Size(60, 22);
+            this.toolStripButtonAddPrice.Size = new System.Drawing.Size(86, 28);
             this.toolStripButtonAddPrice.Text = "添加行情";
             // 
             // toolStripButtonViewPrice
@@ -115,37 +124,69 @@
             this.toolStripButtonViewPrice.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonViewPrice.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonViewPrice.Name = "toolStripButtonViewPrice";
-            this.toolStripButtonViewPrice.Size = new System.Drawing.Size(60, 22);
+            this.toolStripButtonViewPrice.Size = new System.Drawing.Size(86, 28);
             this.toolStripButtonViewPrice.Text = "查看行情";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 33);
+            // 
+            // toolStripButtonFilter
+            // 
+            this.toolStripButtonFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButtonFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonFilter.Name = "toolStripButtonFilter";
+            this.toolStripButtonFilter.Size = new System.Drawing.Size(86, 28);
+            this.toolStripButtonFilter.Text = "股票筛选";
+            // 
+            // toolStripButtonTechnicalAnalysis
+            // 
+            this.toolStripButtonTechnicalAnalysis.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButtonTechnicalAnalysis.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonTechnicalAnalysis.Name = "toolStripButtonTechnicalAnalysis";
+            this.toolStripButtonTechnicalAnalysis.Size = new System.Drawing.Size(86, 28);
+            this.toolStripButtonTechnicalAnalysis.Text = "技术分析";
+            // 
+            // toolStripButtonDataIO
+            // 
+            this.toolStripButtonDataIO.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButtonDataIO.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonDataIO.Name = "toolStripButtonDataIO";
+            this.toolStripButtonDataIO.Size = new System.Drawing.Size(122, 28);
+            this.toolStripButtonDataIO.Text = "数据导入导出";
             // 
             // toolStripButtonExit
             // 
             this.toolStripButtonExit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonExit.Name = "toolStripButtonExit";
-            this.toolStripButtonExit.Size = new System.Drawing.Size(60, 22);
+            this.toolStripButtonExit.Size = new System.Drawing.Size(50, 28);
             this.toolStripButtonExit.Text = "退出";
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 539);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 811);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(984, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(1476, 31);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(131, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(190, 24);
             this.toolStripStatusLabel1.Text = "欢迎使用股票管理系统";
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 25);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 33);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -156,8 +197,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridViewPrices);
-            this.splitContainer1.Size = new System.Drawing.Size(984, 514);
-            this.splitContainer1.SplitterDistance = 244;
+            this.splitContainer1.Size = new System.Drawing.Size(1476, 778);
+            this.splitContainer1.SplitterDistance = 369;
+            this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 3;
             // 
             // listViewStocks
@@ -174,8 +216,9 @@
             this.listViewStocks.GridLines = true;
             this.listViewStocks.HideSelection = false;
             this.listViewStocks.Location = new System.Drawing.Point(0, 0);
+            this.listViewStocks.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.listViewStocks.Name = "listViewStocks";
-            this.listViewStocks.Size = new System.Drawing.Size(984, 244);
+            this.listViewStocks.Size = new System.Drawing.Size(1476, 369);
             this.listViewStocks.TabIndex = 0;
             this.listViewStocks.UseCompatibleStateImageBehavior = false;
             this.listViewStocks.View = System.Windows.Forms.View.Details;
@@ -217,20 +260,23 @@
             this.dataGridViewPrices.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPrices.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewPrices.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewPrices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridViewPrices.Name = "dataGridViewPrices";
             this.dataGridViewPrices.ReadOnly = true;
+            this.dataGridViewPrices.RowHeadersWidth = 62;
             this.dataGridViewPrices.RowTemplate.Height = 23;
-            this.dataGridViewPrices.Size = new System.Drawing.Size(984, 266);
+            this.dataGridViewPrices.Size = new System.Drawing.Size(1476, 403);
             this.dataGridViewPrices.TabIndex = 0;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 561);
+            this.ClientSize = new System.Drawing.Size(1476, 842);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "股票行情查看与分析管理系统";
@@ -260,6 +306,10 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonAddPrice;
         private System.Windows.Forms.ToolStripButton toolStripButtonViewPrice;
         private System.Windows.Forms.ToolStripButton toolStripButtonExit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton toolStripButtonFilter;
+        private System.Windows.Forms.ToolStripButton toolStripButtonTechnicalAnalysis;
+        private System.Windows.Forms.ToolStripButton toolStripButtonDataIO;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.SplitContainer splitContainer1;

@@ -18,19 +18,6 @@ namespace StockManagementSystem.Forms
         private Stock _stock;
         private bool _isAdd;
 
-        // 预定义的股票类型选项
-        private readonly string[] stockTypes = new string[]
-        {
-            "A股",
-            "B股",
-            "H股",
-            "N股",
-            "S股",
-            "创业板",
-            "科创板",
-            "新三板"
-        };
-
         // 预定义的行业选项
         private readonly string[] industries = new string[]
         {
@@ -68,7 +55,10 @@ namespace StockManagementSystem.Forms
 
             // 填充股票类型下拉框
             cboType.Items.Clear();
-            cboType.Items.AddRange(stockTypes);
+            foreach (StockType type in Enum.GetValues(typeof(StockType)))
+            {
+                cboType.Items.Add(type.ToString());
+            }
 
             // 填充行业下拉框
             cboIndustry.Items.Clear();
@@ -83,11 +73,7 @@ namespace StockManagementSystem.Forms
                 // 设置股票类型下拉框选中项
                 if (!string.IsNullOrEmpty(_stock.Type))
                 {
-                    int typeIndex = Array.IndexOf(stockTypes, _stock.Type);
-                    if (typeIndex >= 0)
-                        cboType.SelectedIndex = typeIndex;
-                    else
-                        cboType.Text = _stock.Type; // 如果不在预定义列表中，直接显示文本
+                    cboType.Text = _stock.Type;
                 }
 
                 // 设置行业下拉框选中项
@@ -107,6 +93,8 @@ namespace StockManagementSystem.Forms
             {
                 // 默认设置上市日期为当前日期
                 dateTimePickerListingDate.Value = DateTime.Now;
+                // 默认选择A股
+                cboType.SelectedIndex = 0;
             }
         }
 
@@ -130,7 +118,17 @@ namespace StockManagementSystem.Forms
             // 设置股票信息
             _stock.Code = txtCode.Text.Trim();
             _stock.Name = txtName.Text.Trim();
-            _stock.Type = cboType.Text.Trim();
+
+            // 设置股票类型 - 使用新的枚举属性
+            if (Enum.TryParse(cboType.Text.Trim(), out StockType stockType))
+            {
+                _stock.StockTypeEnum = stockType;
+            }
+            else
+            {
+                _stock.Type = cboType.Text.Trim();
+            }
+
             _stock.Industry = cboIndustry.Text.Trim();
             _stock.ListingDate = dateTimePickerListingDate.Value;
             _stock.Description = txtDescription.Text.Trim();

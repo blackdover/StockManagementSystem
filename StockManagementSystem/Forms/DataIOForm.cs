@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using StockManagementSystem.Helpers;
 using StockManagementSystem.Models;
 using StockManagementSystem.Services;
 
@@ -18,12 +19,14 @@ namespace StockManagementSystem.Forms
         private readonly StockService _stockService;
         private readonly StockPriceService _stockPriceService;
         private bool _dataChanged = false;
+        private ProgressBar progressBarImport; // 导入进度条
 
         public DataIOForm()
         {
             InitializeComponent();
             _stockService = new StockService();
             _stockPriceService = new StockPriceService();
+            InitializeProgressBar();
         }
 
         public DataIOForm(StockService stockService, StockPriceService stockPriceService)
@@ -31,6 +34,58 @@ namespace StockManagementSystem.Forms
             InitializeComponent();
             _stockService = stockService;
             _stockPriceService = stockPriceService;
+            InitializeProgressBar();
+        }
+
+        /// <summary>
+        /// 初始化进度条
+        /// </summary>
+        private void InitializeProgressBar()
+        {
+            // 创建进度条
+            progressBarImport = new ProgressBar();
+            progressBarImport.Location = new Point(15, 65);
+            progressBarImport.Name = "progressBarImport";
+            progressBarImport.Size = new Size(530, 20);
+            progressBarImport.Style = ProgressBarStyle.Continuous;
+            progressBarImport.Visible = false;
+            progressBarImport.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            groupBoxImport.Controls.Add(progressBarImport);
+
+            // 调整groupBoxImport的大小以容纳进度条
+            groupBoxImport.Height = 100;
+        }
+
+        /// <summary>
+        /// 更新进度显示
+        /// </summary>
+        /// <param name="current">当前处理的项</param>
+        /// <param name="total">总项数</param>
+        /// <param name="operation">操作描述</param>
+        private void UpdateProgress(int current, int total, string operation = "处理中")
+        {
+            if (current <= total)
+            {
+                // 更新进度条
+                progressBarImport.Maximum = total;
+                progressBarImport.Value = current;
+
+                // 更新状态栏
+                double percentage = (double)current / total * 100;
+                UpdateStatus($"{operation}: {current}/{total} ({percentage:F1}%)");
+
+                // 刷新界面
+                Application.DoEvents();
+            }
+        }
+
+        /// <summary>
+        /// 重置进度显示
+        /// </summary>
+        private void ResetProgress()
+        {
+            progressBarImport.Visible = false;
+            progressBarImport.Value = 0;
         }
 
         private void DataIOForm_Load(object sender, EventArgs e)
@@ -108,7 +163,7 @@ namespace StockManagementSystem.Forms
                 if (checkBoxAllPrices.Checked)
                 {
                     // 获取所有股票价格数据
-                    prices = _stockPriceService.GetStockPrices(null, DateTime.MinValue, DateTime.MaxValue);
+                    prices = _stockPriceService.GetStockPrices(null, DateTimeHelper.SqlMinDate, DateTimeHelper.SqlMaxDate);
                 }
                 else
                 {
@@ -185,15 +240,26 @@ namespace StockManagementSystem.Forms
 
                     // 检查表头
                     string header = lines[0].Trim();
-                    if (!header.StartsWith("ID,股票代码,股票名称,股票类型,所属行业"))
+                    // 支持原格式和新格式
+                    if (!header.StartsWith("ID,股票代码,股票名称,股票类型,所属行业") &&
+                        !header.StartsWith("Code,Name,Type,Industry,ListingDate"))
                     {
                         MessageBox.Show("文件格式不正确！请确保文件包含正确的表头。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
+                    // 确定表头格式类型
+                    bool isNewFormat = header.StartsWith("Code,Name,Type");
+
                     // 获取现有的股票代码列表（用于检查重复）
+                    UpdateStatus("正在检查现有股票数据...");
                     var existingStocks = _stockService.GetAllStocks();
                     var existingCodes = existingStocks.Select(s => s.Code).ToHashSet();
+
+                    // 显示并初始化进度条
+                    progressBarImport.Visible = true;
+                    int totalCount = lines.Length - 1; // 减去表头
+                    UpdateProgress(0, totalCount, "正在解析股票数据");
 
                     // 解析并导入数据
                     int importedCount = 0;
@@ -202,6 +268,9 @@ namespace StockManagementSystem.Forms
 
                     for (int i = 1; i < lines.Length; i++)
                     {
+                        // 更新进度
+                        UpdateProgress(i, totalCount, "正在解析股票数据");
+
                         string line = lines[i].Trim();
                         if (string.IsNullOrEmpty(line)) continue;
 
@@ -209,9 +278,55 @@ namespace StockManagementSystem.Forms
                         {
                             // 解析CSV行
                             string[] fields = ParseCsvLine(line);
-                            if (fields.Length < 6) continue;
+                            if (fields.Length < 4) continue;
 
-                            string code = fields[1].Trim();
+                            string code;
+                            string name;
+                            string type;
+                            string industry;
+                            string description = "";
+                            DateTime listingDate = DateTime.Now;
+
+                            if (isNewFormat)
+                            {
+                                // 新格式: Code,Name,Type,Industry,ListingDate,Description,CreateTime,UpdateTime
+                                code = fields[0].Trim();
+                                name = fields[1].Trim();
+                                type = fields[2].Trim();
+                                industry = fields[3].Trim();
+
+                                // 解析上市日期，如果无法解析则使用当前日期
+                                if (fields.Length > 4 && !fields[4].Contains("#"))
+                                {
+                                    TryParseDate(fields[4].Trim(), out listingDate);
+                                }
+
+                                // 描述字段
+                                if (fields.Length > 5)
+                                {
+                                    description = fields[5].Trim();
+                                }
+                            }
+                            else
+                            {
+                                // 原格式: ID,股票代码,股票名称,股票类型,所属行业,上市日期,描述
+                                code = fields[1].Trim();
+                                name = fields[2].Trim();
+                                type = fields[3].Trim();
+                                industry = fields[4].Trim();
+
+                                // 解析上市日期
+                                if (fields.Length > 5)
+                                {
+                                    TryParseDate(fields[5].Trim(), out listingDate);
+                                }
+
+                                // 描述字段
+                                if (fields.Length > 6)
+                                {
+                                    description = fields[6].Trim();
+                                }
+                            }
 
                             // 检查是否已存在
                             if (existingCodes.Contains(code))
@@ -224,11 +339,11 @@ namespace StockManagementSystem.Forms
                             Stock stock = new Stock
                             {
                                 Code = code,
-                                Name = fields[2].Trim(),
-                                Type = fields[3].Trim(),
-                                Industry = fields[4].Trim(),
-                                ListingDate = DateTime.TryParse(fields[5].Trim(), out DateTime listingDate) ? listingDate : DateTime.Now,
-                                Description = fields.Length > 6 ? fields[6].Trim() : "",
+                                Name = name,
+                                Type = type,
+                                Industry = industry,
+                                ListingDate = listingDate,
+                                Description = description,
                                 CreateTime = DateTime.Now,
                                 UpdateTime = DateTime.Now
                             };
@@ -246,25 +361,43 @@ namespace StockManagementSystem.Forms
                     // 批量添加股票
                     if (stocksToAdd.Count > 0)
                     {
-                        foreach (var stock in stocksToAdd)
+                        UpdateStatus("正在保存股票数据到数据库...");
+                        int savedCount = 0;
+
+                        for (int i = 0; i < stocksToAdd.Count; i++)
                         {
-                            _stockService.AddStock(stock);
+                            // 更新数据保存进度
+                            UpdateProgress(i + 1, stocksToAdd.Count, "正在保存股票数据");
+
+                            if (_stockService.AddStock(stocksToAdd[i]))
+                            {
+                                savedCount++;
+                            }
                         }
 
                         _dataChanged = true;
 
+                        // 重置进度条
+                        ResetProgress();
+
                         // 更新状态
-                        UpdateStatus($"已成功导入 {importedCount} 条股票数据，跳过 {skippedCount} 条重复或无效数据");
-                        MessageBox.Show($"导入完成！\n成功导入：{importedCount} 条\n跳过重复或无效：{skippedCount} 条", "导入结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        UpdateStatus($"已成功导入 {savedCount} 条股票数据，跳过 {skippedCount} 条重复或无效数据");
+                        MessageBox.Show($"导入完成！\n成功导入：{savedCount} 条\n跳过重复或无效：{skippedCount} 条", "导入结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
+                        // 重置进度条
+                        ResetProgress();
+
                         MessageBox.Show("没有新的股票数据需要导入！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
             catch (Exception ex)
             {
+                // 重置进度条
+                ResetProgress();
+
                 MessageBox.Show($"导入股票数据时发生错误：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 UpdateStatus($"导入股票数据失败：{ex.Message}");
             }
@@ -291,23 +424,36 @@ namespace StockManagementSystem.Forms
 
                     // 检查表头
                     string header = lines[0].Trim();
-                    if (!header.StartsWith("股票ID,股票代码,交易日期,开盘价,收盘价,最高价,最低价"))
+                    // 支持原格式和新格式
+                    if (!header.StartsWith("股票ID,股票代码,交易日期,开盘价,收盘价,最高价,最低价") &&
+                        !header.StartsWith("Code,TradeDate,OpenPrice,ClosePrice,HighPrice,LowPrice") &&
+                        !header.StartsWith("StockId,TradeDate,OpenPrice,ClosePrice,HighPrice,LowPrice"))
                     {
                         MessageBox.Show("文件格式不正确！请确保文件包含正确的表头。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
+                    // 确定表头格式类型
+                    bool isNewFormat = header.StartsWith("Code,TradeDate") || header.StartsWith("StockId,TradeDate");
+
                     // 获取所有股票（用于查询ID）
+                    UpdateStatus("正在加载股票信息...");
                     var stocks = _stockService.GetAllStocks();
                     var stockCodeToId = stocks.ToDictionary(s => s.Code, s => s.StockId);
 
                     // 获取现有的价格数据（用于检查重复）
-                    var existingPrices = _stockPriceService.GetStockPrices(null, DateTime.MinValue, DateTime.MaxValue);
+                    UpdateStatus("正在检查现有价格数据...");
+                    var existingPrices = _stockPriceService.GetStockPrices(null, DateTimeHelper.SqlMinDate, DateTimeHelper.SqlMaxDate);
                     var existingPriceKeys = new HashSet<Tuple<int, DateTime>>();
                     foreach (var price in existingPrices)
                     {
                         existingPriceKeys.Add(new Tuple<int, DateTime>(price.StockId, price.TradeDate.Date));
                     }
+
+                    // 显示并初始化进度条
+                    progressBarImport.Visible = true;
+                    int totalCount = lines.Length - 1; // 减去表头
+                    UpdateProgress(0, totalCount, "正在解析数据");
 
                     // 解析并导入数据
                     int importedCount = 0;
@@ -316,6 +462,9 @@ namespace StockManagementSystem.Forms
 
                     for (int i = 1; i < lines.Length; i++)
                     {
+                        // 更新进度
+                        UpdateProgress(i, totalCount, "正在解析数据");
+
                         string line = lines[i].Trim();
                         if (string.IsNullOrEmpty(line)) continue;
 
@@ -323,28 +472,107 @@ namespace StockManagementSystem.Forms
                         {
                             // 解析CSV行
                             string[] fields = ParseCsvLine(line);
-                            if (fields.Length < 8) continue;
+                            if (fields.Length < 7) continue; // 至少需要7个字段
 
                             int stockId;
-                            string stockCode = fields[1].Trim();
+                            DateTime tradeDate;
+                            decimal openPrice;
+                            decimal closePrice;
+                            decimal highPrice;
+                            decimal lowPrice;
+                            long volume;
+                            decimal amount = 0;
+                            decimal changePercent = 0;
 
-                            // 尝试从第一列获取股票ID，如果失败则通过代码查找
-                            if (!int.TryParse(fields[0].Trim(), out stockId) || !stocks.Any(s => s.StockId == stockId))
+                            if (isNewFormat)
                             {
-                                // 尝试通过股票代码查找ID
+                                // 新格式: Code,TradeDate,OpenPrice,ClosePrice,HighPrice,LowPrice,Volume,Amount,ChangePercent,CreateTime
+
+                                // 解析股票代码
+                                string stockCode = fields[0].Trim();
+
+                                // 通过股票代码查找StockId
                                 if (!stockCodeToId.ContainsKey(stockCode))
                                 {
                                     skippedCount++;
                                     continue; // 找不到对应的股票，跳过
                                 }
                                 stockId = stockCodeToId[stockCode];
-                            }
 
-                            // 解析交易日期
-                            if (!DateTime.TryParse(fields[2].Trim(), out DateTime tradeDate))
+                                // 解析交易日期
+                                if (!TryParseDate(fields[1].Trim(), out tradeDate))
+                                {
+                                    skippedCount++;
+                                    continue;
+                                }
+
+                                // 解析价格数据
+                                if (!decimal.TryParse(fields[2].Trim(), out openPrice) ||
+                                    !decimal.TryParse(fields[3].Trim(), out closePrice) ||
+                                    !decimal.TryParse(fields[4].Trim(), out highPrice) ||
+                                    !decimal.TryParse(fields[5].Trim(), out lowPrice) ||
+                                    !long.TryParse(fields[6].Trim(), out volume))
+                                {
+                                    skippedCount++;
+                                    continue;
+                                }
+
+                                // 解析可选字段
+                                if (fields.Length > 7 && decimal.TryParse(fields[7].Trim(), out decimal parsedAmount))
+                                {
+                                    amount = parsedAmount;
+                                }
+
+                                if (fields.Length > 8 && decimal.TryParse(fields[8].Trim(), out decimal parsedChangePercent))
+                                {
+                                    changePercent = parsedChangePercent;
+                                }
+                            }
+                            else
                             {
-                                skippedCount++;
-                                continue;
+                                // 原格式: 股票ID,股票代码,交易日期,开盘价,收盘价,最高价,最低价,成交量,成交额,涨跌幅
+                                string stockCode = fields[1].Trim();
+
+                                // 尝试从第一列获取股票ID，如果失败则通过代码查找
+                                if (!int.TryParse(fields[0].Trim(), out stockId) || !stocks.Any(s => s.StockId == stockId))
+                                {
+                                    // 尝试通过股票代码查找ID
+                                    if (!stockCodeToId.ContainsKey(stockCode))
+                                    {
+                                        skippedCount++;
+                                        continue; // 找不到对应的股票，跳过
+                                    }
+                                    stockId = stockCodeToId[stockCode];
+                                }
+
+                                // 解析交易日期
+                                if (!TryParseDate(fields[2].Trim(), out tradeDate))
+                                {
+                                    skippedCount++;
+                                    continue;
+                                }
+
+                                // 解析价格数据
+                                if (!decimal.TryParse(fields[3].Trim(), out openPrice) ||
+                                    !decimal.TryParse(fields[4].Trim(), out closePrice) ||
+                                    !decimal.TryParse(fields[5].Trim(), out highPrice) ||
+                                    !decimal.TryParse(fields[6].Trim(), out lowPrice) ||
+                                    !long.TryParse(fields[7].Trim(), out volume))
+                                {
+                                    skippedCount++;
+                                    continue;
+                                }
+
+                                // 解析可选字段
+                                if (fields.Length > 8 && decimal.TryParse(fields[8].Trim(), out decimal parsedAmount))
+                                {
+                                    amount = parsedAmount;
+                                }
+
+                                if (fields.Length > 9 && decimal.TryParse(fields[9].Trim(), out decimal parsedChangePercent))
+                                {
+                                    changePercent = parsedChangePercent;
+                                }
                             }
 
                             // 检查是否已存在相同股票ID和交易日期的记录
@@ -353,31 +581,6 @@ namespace StockManagementSystem.Forms
                             {
                                 skippedCount++;
                                 continue;
-                            }
-
-                            // 解析价格数据
-                            if (!decimal.TryParse(fields[3].Trim(), out decimal openPrice) ||
-                                !decimal.TryParse(fields[4].Trim(), out decimal closePrice) ||
-                                !decimal.TryParse(fields[5].Trim(), out decimal highPrice) ||
-                                !decimal.TryParse(fields[6].Trim(), out decimal lowPrice) ||
-                                !long.TryParse(fields[7].Trim(), out long volume))
-                            {
-                                skippedCount++;
-                                continue;
-                            }
-
-                            // 解析可选字段
-                            decimal amount = 0;
-                            decimal changePercent = 0;
-
-                            if (fields.Length > 8 && decimal.TryParse(fields[8].Trim(), out decimal parsedAmount))
-                            {
-                                amount = parsedAmount;
-                            }
-
-                            if (fields.Length > 9 && decimal.TryParse(fields[9].Trim(), out decimal parsedChangePercent))
-                            {
-                                changePercent = parsedChangePercent;
                             }
 
                             // 创建价格对象
@@ -411,25 +614,43 @@ namespace StockManagementSystem.Forms
                     // 批量添加价格数据
                     if (pricesToAdd.Count > 0)
                     {
-                        foreach (var price in pricesToAdd)
+                        UpdateStatus("正在保存数据到数据库...");
+                        int savedCount = 0;
+
+                        for (int i = 0; i < pricesToAdd.Count; i++)
                         {
-                            _stockPriceService.AddStockPrice(price);
+                            // 更新数据保存进度
+                            UpdateProgress(i + 1, pricesToAdd.Count, "正在保存数据");
+
+                            if (_stockPriceService.AddStockPrice(pricesToAdd[i]))
+                            {
+                                savedCount++;
+                            }
                         }
 
                         _dataChanged = true;
 
+                        // 重置进度条
+                        ResetProgress();
+
                         // 更新状态
-                        UpdateStatus($"已成功导入 {importedCount} 条股票价格数据，跳过 {skippedCount} 条重复或无效数据");
-                        MessageBox.Show($"导入完成！\n成功导入：{importedCount} 条\n跳过重复或无效：{skippedCount} 条", "导入结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        UpdateStatus($"已成功导入 {savedCount} 条股票价格数据，跳过 {skippedCount} 条重复或无效数据");
+                        MessageBox.Show($"导入完成！\n成功导入：{savedCount} 条\n跳过重复或无效：{skippedCount} 条", "导入结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
+                        // 重置进度条
+                        ResetProgress();
+
                         MessageBox.Show("没有新的股票价格数据需要导入！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
             catch (Exception ex)
             {
+                // 重置进度条
+                ResetProgress();
+
                 MessageBox.Show($"导入股票价格数据时发生错误：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 UpdateStatus($"导入股票价格数据失败：{ex.Message}");
             }
@@ -474,6 +695,43 @@ namespace StockManagementSystem.Forms
             result.Add(field.ToString());
 
             return result.ToArray();
+        }
+
+        /// <summary>
+        /// 智能解析日期，支持多种格式
+        /// </summary>
+        private bool TryParseDate(string dateString, out DateTime result)
+        {
+            result = DateTime.Now;
+
+            // 已经是标准格式
+            if (DateTime.TryParse(dateString, out result))
+            {
+                return true;
+            }
+
+            // 处理包含#号的日期字符串
+            if (dateString.Contains("#"))
+            {
+                return false;
+            }
+
+            // 尝试常见格式
+            string[] formats = new string[] {
+                "yyyy/M/d", "yyyy-M-d", "M/d/yyyy", "M-d-yyyy",
+                "yyyy.M.d", "d/M/yyyy", "d-M-yyyy", "d.M.yyyy",
+                "yyyyMMdd"
+            };
+
+            foreach (var format in formats)
+            {
+                if (DateTime.TryParseExact(dateString, format, null, System.Globalization.DateTimeStyles.None, out result))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void checkBoxAllPrices_CheckedChanged(object sender, EventArgs e)

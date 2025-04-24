@@ -230,7 +230,7 @@ namespace StockManagementSystem.Services
         /// </summary>
         private Stock ConvertToStock(DataRow row)
         {
-            return new Stock
+            var stock = new Stock
             {
                 StockId = Convert.ToInt32(row["StockId"]),
                 Code = row["Code"].ToString(),
@@ -242,6 +242,10 @@ namespace StockManagementSystem.Services
                 CreateTime = Convert.ToDateTime(row["CreateTime"]),
                 UpdateTime = Convert.ToDateTime(row["UpdateTime"])
             };
+
+            // StockTypeEnum属性会自动根据Type属性值设置
+
+            return stock;
         }
 
         /// <summary>

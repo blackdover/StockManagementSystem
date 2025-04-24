@@ -30,7 +30,6 @@ namespace StockManagementSystem
             toolStripButtonEditStock.Click += btnEditStock_Click;
             toolStripButtonDeleteStock.Click += btnDeleteStock_Click;
             toolStripButtonViewPrice.Click += btnViewStockPrice_Click;
-            toolStripButtonAddPrice.Click += btnAddStockPrice_Click;
             toolStripButtonFilter.Click += btnStockFilter_Click;
             toolStripButtonDataIO.Click += btnDataIO_Click;
             toolStripButtonExit.Click += (s, e) => Close();
@@ -167,35 +166,81 @@ namespace StockManagementSystem
                 stockChart.Series.Clear();
                 stockChart.Titles.Clear();
 
-                // 创建收盘价线图
-                var closeSeries = new System.Windows.Forms.DataVisualization.Charting.Series($"{stock.Name} 收盘价");
-                closeSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-                closeSeries.Color = Color.Blue;
-                closeSeries.BorderWidth = 2;
-
                 // 创建成交量柱形图（使用第二个Y轴）
                 var volumeSeries = new System.Windows.Forms.DataVisualization.Charting.Series($"{stock.Name} 成交量");
                 volumeSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Column;
                 volumeSeries.Color = Color.LightGray;
                 volumeSeries.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+                // 设置柱状图宽度，避免太宽遮挡
+                volumeSeries["PointWidth"] = "0.6";
+
+                // 创建收盘价线图
+                var closeSeries = new System.Windows.Forms.DataVisualization.Charting.Series($"{stock.Name} 收盘价");
+                closeSeries.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+                closeSeries.Color = Color.Blue;
+                closeSeries.BorderWidth = 2;
+                // 设置线图显示在柱状图前面
+                closeSeries["DrawingStyle"] = "Cylinder";
 
                 // 添加数据点
                 for (int i = 0; i < prices.Count; i++)
                 {
                     var price = prices[i];
                     var date = price.TradeDate.ToShortDateString();
-                    closeSeries.Points.AddXY(date, price.ClosePrice);
                     volumeSeries.Points.AddXY(date, price.Volume);
+                    closeSeries.Points.AddXY(date, price.ClosePrice);
                 }
 
-                // 添加数据系列到图表
-                stockChart.Series.Add(closeSeries);
+                // 添加数据系列到图表 - 先添加成交量系列，后添加收盘价系列，确保收盘价线图显示在最上层
                 stockChart.Series.Add(volumeSeries);
+                stockChart.Series.Add(closeSeries);
 
-                // 配置第二个Y轴
-                stockChart.ChartAreas[0].AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-                stockChart.ChartAreas[0].AxisY2.Title = "成交量";
-                stockChart.ChartAreas[0].AxisY2.LabelStyle.Format = "N0";
+                // 配置图表区域
+                var chartArea = stockChart.ChartAreas[0];
+
+                // 设置X轴
+                chartArea.AxisX.Title = "日期";
+                chartArea.AxisX.LabelStyle.Angle = -30; // 斜角显示日期，节省空间
+                chartArea.AxisX.LabelStyle.Font = new Font("Microsoft YaHei UI", 8);
+                chartArea.AxisX.MajorGrid.LineColor = Color.LightGray;
+                chartArea.AxisX.Interval = Math.Max(1, prices.Count / 10); // 动态调整X轴标签间隔
+
+                // 设置主Y轴（收盘价）
+                chartArea.AxisY.Title = "价格";
+                chartArea.AxisY.LabelStyle.Format = "C2";
+                chartArea.AxisY.MajorGrid.LineColor = Color.LightGray;
+
+                // 获取收盘价的最大最小值，计算合适的Y轴范围
+                decimal minPrice = prices.Min(p => p.LowPrice);
+                decimal maxPrice = prices.Max(p => p.HighPrice);
+                decimal priceRange = maxPrice - minPrice;
+                // 设置Y轴范围，留有10%的余量
+                chartArea.AxisY.Minimum = (double)Math.Max(0, minPrice - priceRange * 0.1m);
+                chartArea.AxisY.Maximum = (double)(maxPrice + priceRange * 0.1m);
+
+                // 配置第二个Y轴（成交量）
+                chartArea.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+                chartArea.AxisY2.Title = "成交量";
+                chartArea.AxisY2.LabelStyle.Format = "N0";
+                chartArea.AxisY2.MajorGrid.Enabled = false; // 禁用第二Y轴的网格线，避免混淆
+
+                // 获取成交量的最大值，计算合适的Y2轴范围
+                long maxVolume = prices.Max(p => p.Volume);
+                // 设置Y2轴范围，留有20%的余量
+                chartArea.AxisY2.Minimum = 0;
+                chartArea.AxisY2.Maximum = (double)(maxVolume * 1.2);
+
+                // 优化图表外观
+                chartArea.BackColor = Color.White;
+                chartArea.BorderColor = Color.LightGray;
+                chartArea.BorderWidth = 1;
+
+                // 设置内边距，确保所有元素都在视图内
+                chartArea.InnerPlotPosition.Auto = false;
+                chartArea.InnerPlotPosition.X = 10;
+                chartArea.InnerPlotPosition.Y = 5;
+                chartArea.InnerPlotPosition.Width = 85;
+                chartArea.InnerPlotPosition.Height = 85;
 
                 // 设置标题
                 var title = new System.Windows.Forms.DataVisualization.Charting.Title($"{stock.Name}({stock.Code}) 股票价格走势");
@@ -297,27 +342,6 @@ namespace StockManagementSystem
                     form.PresetStockId = selectedStockId.Value;
                 }
                 form.ShowDialog();
-            }
-        }
-
-        /// <summary>
-        /// 添加股票行情
-        /// </summary>
-        private void btnAddStockPrice_Click(object sender, EventArgs e)
-        {
-            int? selectedStockId = null;
-            if (listViewStocks.SelectedItems.Count > 0)
-            {
-                var selectedStock = listViewStocks.SelectedItems[0].Tag as Stock;
-                selectedStockId = selectedStock.StockId;
-            }
-
-            using (var form = new StockPriceEditForm(_stockService, _stockPriceService, null, selectedStockId))
-            {
-                if (form.ShowDialog() == DialogResult.OK && selectedStockId.HasValue)
-                {
-                    DrawStockPriceChart(selectedStockId.Value);
-                }
             }
         }
 

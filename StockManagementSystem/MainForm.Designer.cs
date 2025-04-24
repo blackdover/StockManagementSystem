@@ -32,12 +32,10 @@
             this.toolStripButtonAddStock = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonEditStock = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonDeleteStock = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonAddPrice = new System.Windows.Forms.ToolStripButton();
+            //this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonViewPrice = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            //this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonFilter = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonTechnicalAnalysis = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonDataIO = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonExit = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -67,12 +65,10 @@
             this.toolStripButtonAddStock,
             this.toolStripButtonEditStock,
             this.toolStripButtonDeleteStock,
-            this.toolStripSeparator1,
-            this.toolStripButtonAddPrice,
+            //this.toolStripSeparator1,
             this.toolStripButtonViewPrice,
-            this.toolStripSeparator2,
+            //this.toolStripSeparator2,
             this.toolStripButtonFilter,
-            this.toolStripButtonTechnicalAnalysis,
             this.toolStripButtonDataIO,
             this.toolStripButtonExit});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -107,46 +103,30 @@
             this.toolStripButtonDeleteStock.Text = "删除股票";
             // 
             // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 33);
-            // 
-            // toolStripButtonAddPrice
-            // 
-            this.toolStripButtonAddPrice.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonAddPrice.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonAddPrice.Name = "toolStripButtonAddPrice";
-            this.toolStripButtonAddPrice.Size = new System.Drawing.Size(86, 28);
-            this.toolStripButtonAddPrice.Text = "添加行情";
+
+            //this.toolStripSeparator1.Name = "toolStripSeparator1";
+            //this.toolStripSeparator1.Size = new System.Drawing.Size(6, 33);
             // 
             // toolStripButtonViewPrice
             // 
-            this.toolStripButtonViewPrice.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonViewPrice.ImageTransparentColor = System.Drawing.Color.Magenta;
+            //this.toolStripButtonViewPrice.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonViewPrice.Image")));
+            //this.toolStripButtonViewPrice.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonViewPrice.Name = "toolStripButtonViewPrice";
-            this.toolStripButtonViewPrice.Size = new System.Drawing.Size(86, 28);
+            this.toolStripButtonViewPrice.Size = new System.Drawing.Size(76, 22);
             this.toolStripButtonViewPrice.Text = "查看行情";
             // 
             // toolStripSeparator2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 33);
+            //this.toolStripSeparator2.Name = "toolStripSeparator2";
+            //this.toolStripSeparator2.Size = new System.Drawing.Size(6, 33);
             // 
             // toolStripButtonFilter
             // 
-            this.toolStripButtonFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            //this.toolStripButtonFilter.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonFilter.Image")));
+            //this.toolStripButtonFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonFilter.Name = "toolStripButtonFilter";
-            this.toolStripButtonFilter.Size = new System.Drawing.Size(86, 28);
+            this.toolStripButtonFilter.Size = new System.Drawing.Size(76, 22);
             this.toolStripButtonFilter.Text = "股票筛选";
-            // 
-            // toolStripButtonTechnicalAnalysis
-            // 
-            this.toolStripButtonTechnicalAnalysis.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonTechnicalAnalysis.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonTechnicalAnalysis.Name = "toolStripButtonTechnicalAnalysis";
-            this.toolStripButtonTechnicalAnalysis.Size = new System.Drawing.Size(86, 28);
-            this.toolStripButtonTechnicalAnalysis.Text = "技术分析";
             // 
             // toolStripButtonDataIO
             // 
@@ -302,14 +282,10 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonAddStock;
         private System.Windows.Forms.ToolStripButton toolStripButtonEditStock;
         private System.Windows.Forms.ToolStripButton toolStripButtonDeleteStock;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton toolStripButtonAddPrice;
         private System.Windows.Forms.ToolStripButton toolStripButtonViewPrice;
-        private System.Windows.Forms.ToolStripButton toolStripButtonExit;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton toolStripButtonFilter;
-        private System.Windows.Forms.ToolStripButton toolStripButtonTechnicalAnalysis;
         private System.Windows.Forms.ToolStripButton toolStripButtonDataIO;
+        private System.Windows.Forms.ToolStripButton toolStripButtonExit;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.SplitContainer splitContainer1;

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using StockManagementSystem.Helpers;
 using StockManagementSystem.Models;
 using StockManagementSystem.Services;
 using StockManagementSystem.Data;
@@ -124,11 +125,11 @@ namespace StockManagementSystem.Forms
                 cboStock.SelectedValue = _stockPrice.StockId;
 
                 // 设置日期
-                if (_stockPrice.TradeDate != DateTime.MinValue)
+                if (_stockPrice.TradeDate != DateTime.MinValue && DateTimeHelper.IsValidSqlDate(_stockPrice.TradeDate))
                 {
                     dateTimePickerTradeDate.Value = _stockPrice.TradeDate;
                 }
-                else if (_stockPrice.Date != DateTime.MinValue)
+                else if (_stockPrice.Date != DateTime.MinValue && DateTimeHelper.IsValidSqlDate(_stockPrice.Date))
                 {
                     dateTimePickerTradeDate.Value = _stockPrice.Date;
                 }
@@ -205,7 +206,18 @@ namespace StockManagementSystem.Forms
                     cboStock.SelectedValue = _stockPrice.StockId;
 
                     // 设置日期
-                    dateTimePickerTradeDate.Value = _stockPrice.TradeDate;
+                    if (_stockPrice.TradeDate != DateTime.MinValue && DateTimeHelper.IsValidSqlDate(_stockPrice.TradeDate))
+                    {
+                        dateTimePickerTradeDate.Value = _stockPrice.TradeDate;
+                    }
+                    else if (_stockPrice.Date != DateTime.MinValue && DateTimeHelper.IsValidSqlDate(_stockPrice.Date))
+                    {
+                        dateTimePickerTradeDate.Value = _stockPrice.Date;
+                    }
+                    else
+                    {
+                        dateTimePickerTradeDate.Value = DateTime.Now;
+                    }
 
                     // 设置价格
                     numOpenPrice.Value = _stockPrice.OpenPrice;

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using StockManagementSystem.Helpers;
 using StockManagementSystem.Models;
 using StockManagementSystem.Services;
 using StockManagementSystem.Data;
@@ -214,6 +215,9 @@ namespace StockManagementSystem.Forms
             }
         }
 
+        /// <summary>
+        /// 执行查询
+        /// </summary>
         private void PerformQuery()
         {
             // 检查是否已选择股票
@@ -230,8 +234,15 @@ namespace StockManagementSystem.Forms
             var stock = selectedItem.Tag as Stock;
             if (stock == null) return;
 
-            DateTime startDate = dateTimePickerStart.Value.Date;
-            DateTime endDate = dateTimePickerEnd.Value.Date.AddDays(1).AddSeconds(-1); // 设置为当天最后一秒
+            // 获取日期范围并确保在SQL Server支持的范围内
+            DateTime startDate = DateTimeHelper.EnsureSqlDateRange(dateTimePickerStart.Value.Date);
+            DateTime endDate = DateTimeHelper.EnsureSqlDateRange(dateTimePickerEnd.Value.Date.AddDays(1).AddSeconds(-1)); // 设置为当天最后一秒
+
+            if (startDate > endDate)
+            {
+                MessageBox.Show("开始日期不能大于结束日期！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             try
             {

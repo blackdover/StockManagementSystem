@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StockManagementSystem.Data;
+using StockManagementSystem.Helpers;
 using StockManagementSystem.Models;
 
 namespace StockManagementSystem.Services
@@ -186,6 +187,10 @@ namespace StockManagementSystem.Services
         {
             try
             {
+                // 确保日期在SQL Server支持的范围内
+                startDate = DateTimeHelper.EnsureSqlDateRange(startDate);
+                endDate = DateTimeHelper.EnsureSqlDateRange(endDate);
+
                 string sql = "SELECT * FROM StockPrices WHERE StockId = @StockId AND TradeDate >= @StartDate AND TradeDate <= @EndDate ORDER BY TradeDate";
 
                 SqlParameter[] parameters = {
@@ -222,6 +227,10 @@ namespace StockManagementSystem.Services
         {
             try
             {
+                // 确保日期在SQL Server支持的范围内
+                startDate = DateTimeHelper.EnsureSqlDateRange(startDate);
+                endDate = DateTimeHelper.EnsureSqlDateRange(endDate);
+
                 string sql;
                 SqlParameter[] parameters;
 
@@ -272,9 +281,7 @@ namespace StockManagementSystem.Services
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show($"查询股票行情发生错误: {ex.Message}", "错误",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                return new List<StockPrice>();
+                throw new Exception("查询股票行情发生错误:" + ex.Message, ex);
             }
         }
 
@@ -373,7 +380,7 @@ namespace StockManagementSystem.Services
         /// </summary>
         private StockPrice ConvertToStockPrice(DataRow row)
         {
-            return new StockPrice
+            var stockPrice = new StockPrice
             {
                 PriceId = Convert.ToInt32(row["PriceId"]),
                 StockId = Convert.ToInt32(row["StockId"]),
@@ -387,6 +394,20 @@ namespace StockManagementSystem.Services
                 ChangePercent = Convert.ToDecimal(row["ChangePercent"]),
                 CreateTime = Convert.ToDateTime(row["CreateTime"])
             };
+
+            // 如果结果集包含股票代码和名称，则创建一个简单的股票对象
+            if (row.Table.Columns.Contains("Code") && row.Table.Columns.Contains("Name"))
+            {
+                stockPrice.Stock = new Stock
+                {
+                    StockId = stockPrice.StockId,
+                    Code = row["Code"].ToString(),
+                    Name = row["Name"].ToString()
+                    // 其他股票属性将在需要时通过StockService加载
+                };
+            }
+
+            return stockPrice;
         }
 
         /// <summary>

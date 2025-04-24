@@ -312,7 +312,16 @@ namespace StockManagementSystem
                 {
                     MessageBox.Show("删除成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadStockData();
+
+                    // 清空图表
                     stockChart.Series.Clear();
+
+                    // 如果列表中还有股票，则选中第一个
+                    if (listViewStocks.Items.Count > 0)
+                    {
+                        listViewStocks.Items[0].Selected = true;
+                        listViewStocks.EnsureVisible(0);
+                    }
                 }
                 else
                 {
@@ -369,6 +378,12 @@ namespace StockManagementSystem
                         }
                     }
                 }
+
+                // 检查是否有删除操作，如果有则刷新数据
+                if (filterForm.HasDeletedRecords)
+                {
+                    LoadStockData();
+                }
             }
         }
 
@@ -392,6 +407,11 @@ namespace StockManagementSystem
             // 释放资源
             _stockService.Dispose();
             _stockPriceService.Dispose();
+        }
+
+        private void toolStripButtonExit_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

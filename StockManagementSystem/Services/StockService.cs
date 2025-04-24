@@ -226,6 +226,60 @@ namespace StockManagementSystem.Services
         }
 
         /// <summary>
+        /// 根据条件筛选股票
+        /// </summary>
+        /// <param name="stockType">股票类型</param>
+        /// <param name="industry">行业</param>
+        /// <param name="stockCode">股票代码</param>
+        /// <param name="stockName">股票名称</param>
+        /// <returns>符合条件的股票视图模型列表</returns>
+        public IEnumerable<StockViewModel> GetFilteredStocks(string stockType, string industry, string stockCode, string stockName)
+        {
+            try
+            {
+                StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM Stocks WHERE 1=1");
+                List<SqlParameter> parameters = new List<SqlParameter>();
+
+                // 添加筛选条件
+                if (!string.IsNullOrEmpty(stockType))
+                {
+                    sqlBuilder.Append(" AND Type = @Type");
+                    parameters.Add(new SqlParameter("@Type", stockType));
+                }
+
+                if (!string.IsNullOrEmpty(industry))
+                {
+                    sqlBuilder.Append(" AND Industry = @Industry");
+                    parameters.Add(new SqlParameter("@Industry", industry));
+                }
+
+                if (!string.IsNullOrEmpty(stockCode))
+                {
+                    sqlBuilder.Append(" AND Code LIKE @Code");
+                    parameters.Add(new SqlParameter("@Code", "%" + stockCode + "%"));
+                }
+
+                if (!string.IsNullOrEmpty(stockName))
+                {
+                    sqlBuilder.Append(" AND Name LIKE @Name");
+                    parameters.Add(new SqlParameter("@Name", "%" + stockName + "%"));
+                }
+
+                DataTable dt = SqlHelper.ExecuteQuery(sqlBuilder.ToString(), parameters.ToArray());
+                List<Stock> stocks = ConvertToStockList(dt);
+
+                // 转换为视图模型
+                return stocks.Select(s => StockViewModel.FromStock(s));
+            }
+            catch (Exception ex)
+            {
+                // 记录异常
+                Console.WriteLine($"筛选股票时发生错误: {ex.Message}");
+                return new List<StockViewModel>();
+            }
+        }
+
+        /// <summary>
         /// 将DataRow转换为Stock对象
         /// </summary>
         private Stock ConvertToStock(DataRow row)

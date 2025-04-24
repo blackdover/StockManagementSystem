@@ -126,7 +126,11 @@ namespace StockManagementSystem.Forms
                     // 添加数据行
                     foreach (var stock in stocks)
                     {
-                        sb.AppendLine($"{stock.StockId},{stock.Code},{stock.Name},{stock.Type},{stock.Industry},{stock.ListingDate:yyyy-MM-dd},{stock.Description?.Replace(",", " ")}");
+                        // 将日期格式修改为年-月-日格式，并用引号包裹，避免Excel显示######
+                        string formattedDate = $"\"{stock.ListingDate:yyyy-MM-dd}\"";
+                        string description = stock.Description?.Replace(",", " ") ?? "";
+
+                        sb.AppendLine($"{stock.StockId},{stock.Code},{stock.Name},{stock.Type},{stock.Industry},{formattedDate},{description}");
                     }
 
                     // 写入文件
@@ -134,7 +138,7 @@ namespace StockManagementSystem.Forms
 
                     // 更新状态
                     UpdateStatus($"成功导出 {stocks.Count} 条股票数据到 {saveFileDialog.FileName}");
-                    MessageBox.Show($"成功导出 {stocks.Count} 条股票数据！", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"成功导出 {stocks.Count} 条股票数据！\n\n提示：如果在Excel中打开时日期显示异常，请先选择该列然后调整列宽。", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
@@ -197,7 +201,10 @@ namespace StockManagementSystem.Forms
                     foreach (var price in prices)
                     {
                         string stockCode = stocks.ContainsKey(price.StockId) ? stocks[price.StockId].Code : price.StockId.ToString();
-                        sb.AppendLine($"{price.StockId},{stockCode},{price.TradeDate:yyyy-MM-dd},{price.OpenPrice},{price.ClosePrice},{price.HighPrice},{price.LowPrice},{price.Volume},{price.Amount},{price.ChangePercent}");
+                        // 将日期格式修改为年-月-日格式，并用引号包裹，避免Excel显示######
+                        string formattedDate = $"\"{price.TradeDate:yyyy-MM-dd}\"";
+
+                        sb.AppendLine($"{price.StockId},{stockCode},{formattedDate},{price.OpenPrice},{price.ClosePrice},{price.HighPrice},{price.LowPrice},{price.Volume},{price.Amount},{price.ChangePercent}");
                     }
 
                     // 写入文件
@@ -205,7 +212,7 @@ namespace StockManagementSystem.Forms
 
                     // 更新状态
                     UpdateStatus($"成功导出 {prices.Count} 条股票价格数据到 {saveFileDialog.FileName}");
-                    MessageBox.Show($"成功导出 {prices.Count} 条股票价格数据！", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"成功导出 {prices.Count} 条股票价格数据！\n\n提示：如果在Excel中打开时日期显示异常，请先选择该列然后调整列宽。", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)

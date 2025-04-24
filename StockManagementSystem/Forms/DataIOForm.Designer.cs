@@ -49,7 +49,7 @@ namespace StockManagementSystem.Forms
             // 
             // groupBoxExport
             // 
-            this.groupBoxExport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.groupBoxExport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxExport.Controls.Add(this.dateTimePickerEnd);
             this.groupBoxExport.Controls.Add(this.labelTo);
@@ -58,51 +58,58 @@ namespace StockManagementSystem.Forms
             this.groupBoxExport.Controls.Add(this.checkBoxAllPrices);
             this.groupBoxExport.Controls.Add(this.btnExportPrices);
             this.groupBoxExport.Controls.Add(this.btnExportStocks);
-            this.groupBoxExport.Location = new System.Drawing.Point(12, 12);
+            this.groupBoxExport.Location = new System.Drawing.Point(18, 18);
+            this.groupBoxExport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBoxExport.Name = "groupBoxExport";
-            this.groupBoxExport.Size = new System.Drawing.Size(560, 133);
+            this.groupBoxExport.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxExport.Size = new System.Drawing.Size(840, 200);
             this.groupBoxExport.TabIndex = 0;
             this.groupBoxExport.TabStop = false;
             this.groupBoxExport.Text = "数据导出";
             // 
             // dateTimePickerEnd
             // 
-            this.dateTimePickerEnd.Location = new System.Drawing.Point(307, 100);
+            this.dateTimePickerEnd.Location = new System.Drawing.Point(490, 148);
+            this.dateTimePickerEnd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dateTimePickerEnd.Name = "dateTimePickerEnd";
-            this.dateTimePickerEnd.Size = new System.Drawing.Size(130, 21);
+            this.dateTimePickerEnd.Size = new System.Drawing.Size(193, 28);
             this.dateTimePickerEnd.TabIndex = 6;
             // 
             // labelTo
             // 
             this.labelTo.AutoSize = true;
-            this.labelTo.Location = new System.Drawing.Point(287, 104);
+            this.labelTo.Location = new System.Drawing.Point(460, 154);
+            this.labelTo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTo.Name = "labelTo";
-            this.labelTo.Size = new System.Drawing.Size(17, 12);
+            this.labelTo.Size = new System.Drawing.Size(26, 18);
             this.labelTo.TabIndex = 5;
             this.labelTo.Text = "至";
             // 
             // dateTimePickerStart
             // 
-            this.dateTimePickerStart.Location = new System.Drawing.Point(154, 100);
+            this.dateTimePickerStart.Location = new System.Drawing.Point(261, 148);
+            this.dateTimePickerStart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dateTimePickerStart.Name = "dateTimePickerStart";
-            this.dateTimePickerStart.Size = new System.Drawing.Size(130, 21);
+            this.dateTimePickerStart.Size = new System.Drawing.Size(193, 28);
             this.dateTimePickerStart.TabIndex = 4;
             // 
             // labelDateRange
             // 
             this.labelDateRange.AutoSize = true;
-            this.labelDateRange.Location = new System.Drawing.Point(95, 104);
+            this.labelDateRange.Location = new System.Drawing.Point(172, 154);
+            this.labelDateRange.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelDateRange.Name = "labelDateRange";
-            this.labelDateRange.Size = new System.Drawing.Size(65, 12);
+            this.labelDateRange.Size = new System.Drawing.Size(98, 18);
             this.labelDateRange.TabIndex = 3;
             this.labelDateRange.Text = "日期范围：";
             // 
             // checkBoxAllPrices
             // 
             this.checkBoxAllPrices.AutoSize = true;
-            this.checkBoxAllPrices.Location = new System.Drawing.Point(15, 103);
+            this.checkBoxAllPrices.Location = new System.Drawing.Point(22, 154);
+            this.checkBoxAllPrices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBoxAllPrices.Name = "checkBoxAllPrices";
-            this.checkBoxAllPrices.Size = new System.Drawing.Size(84, 16);
+            this.checkBoxAllPrices.Size = new System.Drawing.Size(142, 22);
             this.checkBoxAllPrices.TabIndex = 2;
             this.checkBoxAllPrices.Text = "导出所有价格";
             this.checkBoxAllPrices.UseVisualStyleBackColor = true;
@@ -110,9 +117,10 @@ namespace StockManagementSystem.Forms
             // 
             // btnExportPrices
             // 
-            this.btnExportPrices.Location = new System.Drawing.Point(15, 63);
+            this.btnExportPrices.Location = new System.Drawing.Point(22, 94);
+            this.btnExportPrices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnExportPrices.Name = "btnExportPrices";
-            this.btnExportPrices.Size = new System.Drawing.Size(143, 23);
+            this.btnExportPrices.Size = new System.Drawing.Size(214, 34);
             this.btnExportPrices.TabIndex = 1;
             this.btnExportPrices.Text = "导出股票价格数据";
             this.btnExportPrices.UseVisualStyleBackColor = true;
@@ -120,9 +128,10 @@ namespace StockManagementSystem.Forms
             // 
             // btnExportStocks
             // 
-            this.btnExportStocks.Location = new System.Drawing.Point(15, 29);
+            this.btnExportStocks.Location = new System.Drawing.Point(22, 44);
+            this.btnExportStocks.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnExportStocks.Name = "btnExportStocks";
-            this.btnExportStocks.Size = new System.Drawing.Size(143, 23);
+            this.btnExportStocks.Size = new System.Drawing.Size(214, 34);
             this.btnExportStocks.TabIndex = 0;
             this.btnExportStocks.Text = "导出股票基本信息";
             this.btnExportStocks.UseVisualStyleBackColor = true;
@@ -130,22 +139,25 @@ namespace StockManagementSystem.Forms
             // 
             // groupBoxImport
             // 
-            this.groupBoxImport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.groupBoxImport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxImport.Controls.Add(this.btnImportPrices);
             this.groupBoxImport.Controls.Add(this.btnImportStocks);
-            this.groupBoxImport.Location = new System.Drawing.Point(12, 151);
+            this.groupBoxImport.Location = new System.Drawing.Point(18, 226);
+            this.groupBoxImport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBoxImport.Name = "groupBoxImport";
-            this.groupBoxImport.Size = new System.Drawing.Size(560, 71);
+            this.groupBoxImport.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxImport.Size = new System.Drawing.Size(840, 106);
             this.groupBoxImport.TabIndex = 1;
             this.groupBoxImport.TabStop = false;
             this.groupBoxImport.Text = "数据导入";
             // 
             // btnImportPrices
             // 
-            this.btnImportPrices.Location = new System.Drawing.Point(164, 29);
+            this.btnImportPrices.Location = new System.Drawing.Point(246, 44);
+            this.btnImportPrices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnImportPrices.Name = "btnImportPrices";
-            this.btnImportPrices.Size = new System.Drawing.Size(143, 23);
+            this.btnImportPrices.Size = new System.Drawing.Size(214, 34);
             this.btnImportPrices.TabIndex = 1;
             this.btnImportPrices.Text = "导入股票价格数据";
             this.btnImportPrices.UseVisualStyleBackColor = true;
@@ -153,9 +165,10 @@ namespace StockManagementSystem.Forms
             // 
             // btnImportStocks
             // 
-            this.btnImportStocks.Location = new System.Drawing.Point(15, 29);
+            this.btnImportStocks.Location = new System.Drawing.Point(22, 44);
+            this.btnImportStocks.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnImportStocks.Name = "btnImportStocks";
-            this.btnImportStocks.Size = new System.Drawing.Size(143, 23);
+            this.btnImportStocks.Size = new System.Drawing.Size(214, 34);
             this.btnImportStocks.TabIndex = 0;
             this.btnImportStocks.Text = "导入股票基本信息";
             this.btnImportStocks.UseVisualStyleBackColor = true;
@@ -163,27 +176,30 @@ namespace StockManagementSystem.Forms
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.labelStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 259);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 391);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(584, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(876, 31);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // labelStatus
             // 
             this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(131, 17);
+            this.labelStatus.Size = new System.Drawing.Size(202, 24);
             this.labelStatus.Text = "准备执行数据导入导出...";
             // 
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnClose.Location = new System.Drawing.Point(497, 228);
+            this.btnClose.Location = new System.Drawing.Point(746, 342);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.Size = new System.Drawing.Size(112, 34);
             this.btnClose.TabIndex = 3;
             this.btnClose.Text = "关闭";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -191,14 +207,15 @@ namespace StockManagementSystem.Forms
             // 
             // DataIOForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 281);
+            this.ClientSize = new System.Drawing.Size(876, 422);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBoxImport);
             this.Controls.Add(this.groupBoxExport);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DataIOForm";

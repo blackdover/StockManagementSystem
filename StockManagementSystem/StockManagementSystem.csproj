@@ -77,6 +77,7 @@
     </Compile>
     <Compile Include="Models\Stock.cs" />
     <Compile Include="Models\StockPrice.cs" />
+    <Compile Include="Models\StockViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\StockService.cs" />
@@ -99,6 +100,9 @@
     <Compile Include="StockFilterForm.Designer.cs">
       <DependentUpon>StockFilterForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\DataIOForm.resx">
+      <DependentUpon>DataIOForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\StockEditForm.resx">
       <DependentUpon>StockEditForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,6 +124,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="StockFilterForm.resx">
+      <DependentUpon>StockFilterForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

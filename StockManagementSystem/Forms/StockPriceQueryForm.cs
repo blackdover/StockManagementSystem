@@ -236,7 +236,7 @@ namespace StockManagementSystem.Forms
 
             // 获取日期范围并确保在SQL Server支持的范围内
             DateTime startDate = DateTimeHelper.EnsureSqlDateRange(dateTimePickerStart.Value.Date);
-            DateTime endDate = DateTimeHelper.EnsureSqlDateRange(dateTimePickerEnd.Value.Date.AddDays(1).AddSeconds(-1)); // 设置为当天最后一秒
+            DateTime endDate = DateTimeHelper.EnsureSqlDateRange(dateTimePickerEnd.Value.Date.AddDays(1)); // 设置为当天最后一秒
 
             if (startDate > endDate)
             {
@@ -633,7 +633,7 @@ namespace StockManagementSystem.Forms
                     {
                         // 重新查询刷新数据
                         PerformQuery();
-                        MessageBox.Show("行情数据已成功添加", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // MessageBox.Show("行情数据已成功添加", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {

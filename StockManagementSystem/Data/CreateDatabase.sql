@@ -57,14 +57,3 @@ BEGIN
     CREATE INDEX IX_StockPrices_StockId_TradeDate ON StockPrices(StockId, TradeDate);
 END
 GO
-
--- 创建示例数据（如果需要）
--- 插入示例股票
-/*
-IF NOT EXISTS (SELECT * FROM Stocks WHERE Code = '000001')
-BEGIN
-    INSERT INTO Stocks (Code, Name, Type, Industry, ListingDate, Description, CreateTime, UpdateTime)
-    VALUES ('000001', '平安银行', 'A股', '银行', '1991-04-03', '平安银行股份有限公司是中国平安保险集团股份有限公司控股的一家股份制商业银行', GETDATE(), GETDATE());
-END
-GO
-*/ 

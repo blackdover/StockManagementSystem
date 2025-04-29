@@ -28,7 +28,6 @@ namespace StockManagementSystem
             toolStripButtonViewPrice.Click += btnViewStockPrice_Click;
             toolStripButtonFilter.Click += btnStockFilter_Click;
             toolStripButtonDataIO.Click += btnDataIO_Click;
-            toolStripButtonExit.Click += (s, e) => Close();
 
             // 绑定ListView选择事件
             listViewStocks.SelectedIndexChanged += listViewStocks_SelectedIndexChanged;

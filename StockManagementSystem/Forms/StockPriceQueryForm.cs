@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using StockManagementSystem.Helpers;
+using StockManagementSystem.Services.Helpers;
 using StockManagementSystem.Models;
 using StockManagementSystem.Services;
 using StockManagementSystem.Data;

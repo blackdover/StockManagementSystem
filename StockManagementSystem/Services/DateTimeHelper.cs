@@ -1,6 +1,6 @@
 using System;
 
-namespace StockManagementSystem.Helpers
+namespace StockManagementSystem.Services.Helpers
 {
     /// <summary>
     /// 日期时间辅助类，提供SQL Server兼容的日期常量和验证方法

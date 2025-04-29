@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="Data\StockDbContext.cs" />
     <Compile Include="Data\SqlHelper.cs" />
-    <Compile Include="DateTimeHelper.cs" />
+    <Compile Include="Services\DateTimeHelper.cs" />
     <Compile Include="Forms\DataIOForm.cs">
       <SubType>Form</SubType>
     </Compile>

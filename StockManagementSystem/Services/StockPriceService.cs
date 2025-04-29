@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StockManagementSystem.Data;
-using StockManagementSystem.Helpers;
+using StockManagementSystem.Services.Helpers;
 using StockManagementSystem.Models;
 
 namespace StockManagementSystem.Services

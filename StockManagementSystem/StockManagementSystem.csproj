@@ -94,10 +94,10 @@
     <Compile Include="Forms\StockPriceQueryForm.Designer.cs">
       <DependentUpon>StockPriceQueryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="StockFilterForm.cs">
+    <Compile Include="Forms\StockFilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StockFilterForm.Designer.cs">
+    <Compile Include="Forms\StockFilterForm.Designer.cs">
       <DependentUpon>StockFilterForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Forms\DataIOForm.resx">
@@ -124,7 +124,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="StockFilterForm.resx">
+    <EmbeddedResource Include="Forms\StockFilterForm.resx">
       <DependentUpon>StockFilterForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

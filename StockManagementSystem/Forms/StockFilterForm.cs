@@ -15,6 +15,11 @@ namespace StockManagementSystem
 
         public Stock SelectedStock { get; private set; }
 
+        /// <summary>
+        /// 标记是否有删除操作发生
+        /// </summary>
+        public bool HasDeletedRecords { get; private set; } = false;
+
         public StockFilterForm()
         {
             InitializeComponent();
@@ -25,7 +30,15 @@ namespace StockManagementSystem
         {
             LoadStockTypes();
             LoadIndustries();
-            LoadAllStocks();
+
+            // 设置列表视图的列标题
+            listViewFilteredStocks.Columns[0].Text = "股票代码";
+            listViewFilteredStocks.Columns[1].Text = "股票名称";
+            listViewFilteredStocks.Columns[2].Text = "股票类型";
+            listViewFilteredStocks.Columns[3].Text = "所属行业";
+
+            // 应用默认筛选（加载所有股票）
+            ApplyFilters();
         }
 
         private void LoadStockTypes()
@@ -74,36 +87,32 @@ namespace StockManagementSystem
 
         private void ApplyFilters()
         {
-            // 清空列表
+            // 获取筛选条件
+            string stockType = cboStockType.SelectedIndex > 0 ? cboStockType.SelectedItem.ToString() : null;
+            string industry = cboIndustry.SelectedIndex > 0 ? cboIndustry.SelectedItem.ToString() : null;
+            string stockCode = string.IsNullOrWhiteSpace(txtStockCode.Text) ? null : txtStockCode.Text.Trim();
+            string stockName = string.IsNullOrWhiteSpace(txtStockName.Text) ? null : txtStockName.Text.Trim();
+
+            // 清空现有结果
             listViewFilteredStocks.Items.Clear();
 
-            // 获取筛选条件
-            string typeFilter = cboStockType.SelectedIndex > 0 ? cboStockType.SelectedItem.ToString() : null;
-            string industryFilter = cboIndustry.SelectedIndex > 0 ? cboIndustry.SelectedItem.ToString() : null;
-            string codeFilter = string.IsNullOrWhiteSpace(txtStockCode.Text) ? null : txtStockCode.Text.Trim();
-            string nameFilter = string.IsNullOrWhiteSpace(txtStockName.Text) ? null : txtStockName.Text.Trim();
+            // 应用筛选
+            IEnumerable<StockViewModel> filteredStocks = _stockService.GetFilteredStocks(stockType, industry, stockCode, stockName);
+            filteredStocks = filteredStocks.OrderBy(s => s.Code);
 
-            // 筛选股票
-            var filteredStocks = _allStocks.Where(s =>
-                (typeFilter == null || s.Type == typeFilter) &&
-                (industryFilter == null || s.Industry == industryFilter) &&
-                (codeFilter == null || s.Code.Contains(codeFilter)) &&
-                (nameFilter == null || s.Name.Contains(nameFilter))
-            ).ToList();
-
-            // 添加到列表中
+            // 显示筛选结果
             foreach (var stock in filteredStocks)
             {
-                var item = new ListViewItem(stock.Code);
+                ListViewItem item = new ListViewItem(stock.Code);
                 item.SubItems.Add(stock.Name);
                 item.SubItems.Add(stock.Type);
                 item.SubItems.Add(stock.Industry);
-                item.Tag = stock;
+                item.Tag = stock; // 将股票对象关联到ListViewItem
                 listViewFilteredStocks.Items.Add(item);
             }
 
             // 更新结果计数
-            lblResultCount.Text = $"共找到 {filteredStocks.Count} 条记录";
+            lblResultCount.Text = $"找到 {listViewFilteredStocks.Items.Count} 条记录";
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
@@ -149,6 +158,90 @@ namespace StockManagementSystem
             {
                 SelectedStock = listViewFilteredStocks.SelectedItems[0].Tag as Stock;
                 DialogResult = DialogResult.OK;
+            }
+        }
+
+        /// <summary>
+        /// 全选按钮点击事件处理
+        /// </summary>
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in listViewFilteredStocks.Items)
+            {
+                item.Checked = true;
+            }
+        }
+
+        /// <summary>
+        /// 删除按钮点击事件处理
+        /// </summary>
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            // 获取选中的项目
+            List<ListViewItem> checkedItems = new List<ListViewItem>();
+            foreach (ListViewItem item in listViewFilteredStocks.Items)
+            {
+                if (item.Checked)
+                {
+                    checkedItems.Add(item);
+                }
+            }
+
+            // 如果没有选中任何项目，显示提示并返回
+            if (checkedItems.Count == 0)
+            {
+                MessageBox.Show("请至少选择一项进行删除！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // 显示确认对话框
+            DialogResult result = MessageBox.Show($"确定要删除选中的 {checkedItems.Count} 项股票记录吗？此操作不可撤销。",
+                "确认删除", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            // 如果用户确认删除
+            if (result == DialogResult.Yes)
+            {
+                int successCount = 0;
+                List<string> failedStocks = new List<string>();
+
+                // 删除每个选中的股票
+                foreach (ListViewItem item in checkedItems)
+                {
+                    StockViewModel stock = (StockViewModel)item.Tag;
+                    try
+                    {
+                        bool deleteResult = _stockService.DeleteStock(stock.Id);
+                        if (deleteResult)
+                        {
+                            successCount++;
+                            listViewFilteredStocks.Items.Remove(item);
+                            HasDeletedRecords = true; // 标记有删除操作发生
+                        }
+                        else
+                        {
+                            failedStocks.Add($"{stock.Code} - {stock.Name}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        failedStocks.Add($"{stock.Code} - {stock.Name} (错误: {ex.Message})");
+                    }
+                }
+
+                // 更新结果计数
+                lblResultCount.Text = $"找到 {listViewFilteredStocks.Items.Count} 条记录";
+
+                // 显示操作结果
+                if (failedStocks.Count == 0)
+                {
+                    MessageBox.Show($"成功删除 {successCount} 项股票记录。", "删除成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    string failedMessage = string.Join("\n", failedStocks);
+                    MessageBox.Show($"删除操作完成。成功: {successCount} 项，失败: {failedStocks.Count} 项。\n\n删除失败的股票:\n{failedMessage}",
+                        "删除部分成功", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
     }

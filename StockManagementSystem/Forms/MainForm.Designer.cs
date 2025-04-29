@@ -70,7 +70,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(1476, 33);
+            this.toolStrip1.Size = new System.Drawing.Size(1476, 38);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -79,7 +79,7 @@
             this.toolStripButtonAddStock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonAddStock.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonAddStock.Name = "toolStripButtonAddStock";
-            this.toolStripButtonAddStock.Size = new System.Drawing.Size(86, 28);
+            this.toolStripButtonAddStock.Size = new System.Drawing.Size(86, 33);
             this.toolStripButtonAddStock.Text = "添加股票";
             // 
             // toolStripButtonEditStock
@@ -87,7 +87,7 @@
             this.toolStripButtonEditStock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonEditStock.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonEditStock.Name = "toolStripButtonEditStock";
-            this.toolStripButtonEditStock.Size = new System.Drawing.Size(86, 28);
+            this.toolStripButtonEditStock.Size = new System.Drawing.Size(86, 33);
             this.toolStripButtonEditStock.Text = "编辑股票";
             // 
             // toolStripButtonDeleteStock
@@ -95,19 +95,19 @@
             this.toolStripButtonDeleteStock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonDeleteStock.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonDeleteStock.Name = "toolStripButtonDeleteStock";
-            this.toolStripButtonDeleteStock.Size = new System.Drawing.Size(86, 28);
+            this.toolStripButtonDeleteStock.Size = new System.Drawing.Size(86, 33);
             this.toolStripButtonDeleteStock.Text = "删除股票";
             // 
             // toolStripButtonViewPrice
             // 
             this.toolStripButtonViewPrice.Name = "toolStripButtonViewPrice";
-            this.toolStripButtonViewPrice.Size = new System.Drawing.Size(86, 28);
+            this.toolStripButtonViewPrice.Size = new System.Drawing.Size(86, 33);
             this.toolStripButtonViewPrice.Text = "查看行情";
             // 
             // toolStripButtonFilter
             // 
             this.toolStripButtonFilter.Name = "toolStripButtonFilter";
-            this.toolStripButtonFilter.Size = new System.Drawing.Size(86, 28);
+            this.toolStripButtonFilter.Size = new System.Drawing.Size(86, 33);
             this.toolStripButtonFilter.Text = "股票筛选";
             // 
             // toolStripButtonDataIO
@@ -115,7 +115,7 @@
             this.toolStripButtonDataIO.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonDataIO.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonDataIO.Name = "toolStripButtonDataIO";
-            this.toolStripButtonDataIO.Size = new System.Drawing.Size(122, 28);
+            this.toolStripButtonDataIO.Size = new System.Drawing.Size(122, 33);
             this.toolStripButtonDataIO.Text = "数据导入导出";
             // 
             // toolStripButtonExit
@@ -123,7 +123,7 @@
             this.toolStripButtonExit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButtonExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonExit.Name = "toolStripButtonExit";
-            this.toolStripButtonExit.Size = new System.Drawing.Size(50, 28);
+            this.toolStripButtonExit.Size = new System.Drawing.Size(50, 33);
             this.toolStripButtonExit.Text = "退出";
             this.toolStripButtonExit.Click += new System.EventHandler(this.toolStripButtonExit_Click);
             // 
@@ -148,7 +148,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 33);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 38);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -160,8 +160,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dataGridViewPrices);
-            this.splitContainer1.Size = new System.Drawing.Size(1476, 778);
-            this.splitContainer1.SplitterDistance = 369;
+            this.splitContainer1.Size = new System.Drawing.Size(1476, 773);
+            this.splitContainer1.SplitterDistance = 366;
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 3;
             // 
@@ -181,7 +181,7 @@
             this.listViewStocks.Location = new System.Drawing.Point(0, 0);
             this.listViewStocks.Margin = new System.Windows.Forms.Padding(4);
             this.listViewStocks.Name = "listViewStocks";
-            this.listViewStocks.Size = new System.Drawing.Size(1476, 369);
+            this.listViewStocks.Size = new System.Drawing.Size(1476, 366);
             this.listViewStocks.TabIndex = 0;
             this.listViewStocks.UseCompatibleStateImageBehavior = false;
             this.listViewStocks.View = System.Windows.Forms.View.Details;
@@ -228,7 +228,7 @@
             this.dataGridViewPrices.ReadOnly = true;
             this.dataGridViewPrices.RowHeadersWidth = 62;
             this.dataGridViewPrices.RowTemplate.Height = 23;
-            this.dataGridViewPrices.Size = new System.Drawing.Size(1476, 403);
+            this.dataGridViewPrices.Size = new System.Drawing.Size(1476, 401);
             this.dataGridViewPrices.TabIndex = 0;
             // 
             // MainForm

@@ -59,9 +59,9 @@ namespace StockManagementSystem.Forms
             this.groupBoxExport.Controls.Add(this.btnExportPrices);
             this.groupBoxExport.Controls.Add(this.btnExportStocks);
             this.groupBoxExport.Location = new System.Drawing.Point(18, 18);
-            this.groupBoxExport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxExport.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxExport.Name = "groupBoxExport";
-            this.groupBoxExport.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxExport.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxExport.Size = new System.Drawing.Size(840, 200);
             this.groupBoxExport.TabIndex = 0;
             this.groupBoxExport.TabStop = false;
@@ -70,7 +70,7 @@ namespace StockManagementSystem.Forms
             // dateTimePickerEnd
             // 
             this.dateTimePickerEnd.Location = new System.Drawing.Point(490, 148);
-            this.dateTimePickerEnd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePickerEnd.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePickerEnd.Name = "dateTimePickerEnd";
             this.dateTimePickerEnd.Size = new System.Drawing.Size(193, 28);
             this.dateTimePickerEnd.TabIndex = 6;
@@ -88,7 +88,7 @@ namespace StockManagementSystem.Forms
             // dateTimePickerStart
             // 
             this.dateTimePickerStart.Location = new System.Drawing.Point(261, 148);
-            this.dateTimePickerStart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePickerStart.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePickerStart.Name = "dateTimePickerStart";
             this.dateTimePickerStart.Size = new System.Drawing.Size(193, 28);
             this.dateTimePickerStart.TabIndex = 4;
@@ -107,7 +107,7 @@ namespace StockManagementSystem.Forms
             // 
             this.checkBoxAllPrices.AutoSize = true;
             this.checkBoxAllPrices.Location = new System.Drawing.Point(22, 154);
-            this.checkBoxAllPrices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkBoxAllPrices.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxAllPrices.Name = "checkBoxAllPrices";
             this.checkBoxAllPrices.Size = new System.Drawing.Size(142, 22);
             this.checkBoxAllPrices.TabIndex = 2;
@@ -118,7 +118,7 @@ namespace StockManagementSystem.Forms
             // btnExportPrices
             // 
             this.btnExportPrices.Location = new System.Drawing.Point(22, 94);
-            this.btnExportPrices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnExportPrices.Margin = new System.Windows.Forms.Padding(4);
             this.btnExportPrices.Name = "btnExportPrices";
             this.btnExportPrices.Size = new System.Drawing.Size(214, 34);
             this.btnExportPrices.TabIndex = 1;
@@ -129,7 +129,7 @@ namespace StockManagementSystem.Forms
             // btnExportStocks
             // 
             this.btnExportStocks.Location = new System.Drawing.Point(22, 44);
-            this.btnExportStocks.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnExportStocks.Margin = new System.Windows.Forms.Padding(4);
             this.btnExportStocks.Name = "btnExportStocks";
             this.btnExportStocks.Size = new System.Drawing.Size(214, 34);
             this.btnExportStocks.TabIndex = 0;
@@ -144,10 +144,10 @@ namespace StockManagementSystem.Forms
             this.groupBoxImport.Controls.Add(this.btnImportPrices);
             this.groupBoxImport.Controls.Add(this.btnImportStocks);
             this.groupBoxImport.Location = new System.Drawing.Point(18, 226);
-            this.groupBoxImport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxImport.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxImport.Name = "groupBoxImport";
-            this.groupBoxImport.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBoxImport.Size = new System.Drawing.Size(840, 106);
+            this.groupBoxImport.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBoxImport.Size = new System.Drawing.Size(840, 161);
             this.groupBoxImport.TabIndex = 1;
             this.groupBoxImport.TabStop = false;
             this.groupBoxImport.Text = "数据导入";
@@ -155,7 +155,7 @@ namespace StockManagementSystem.Forms
             // btnImportPrices
             // 
             this.btnImportPrices.Location = new System.Drawing.Point(246, 44);
-            this.btnImportPrices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnImportPrices.Margin = new System.Windows.Forms.Padding(4);
             this.btnImportPrices.Name = "btnImportPrices";
             this.btnImportPrices.Size = new System.Drawing.Size(214, 34);
             this.btnImportPrices.TabIndex = 1;
@@ -166,7 +166,7 @@ namespace StockManagementSystem.Forms
             // btnImportStocks
             // 
             this.btnImportStocks.Location = new System.Drawing.Point(22, 44);
-            this.btnImportStocks.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnImportStocks.Margin = new System.Windows.Forms.Padding(4);
             this.btnImportStocks.Name = "btnImportStocks";
             this.btnImportStocks.Size = new System.Drawing.Size(214, 34);
             this.btnImportStocks.TabIndex = 0;
@@ -196,8 +196,8 @@ namespace StockManagementSystem.Forms
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnClose.Location = new System.Drawing.Point(746, 342);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnClose.Location = new System.Drawing.Point(746, 353);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(4);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(112, 34);
             this.btnClose.TabIndex = 3;
@@ -215,7 +215,7 @@ namespace StockManagementSystem.Forms
             this.Controls.Add(this.groupBoxImport);
             this.Controls.Add(this.groupBoxExport);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DataIOForm";

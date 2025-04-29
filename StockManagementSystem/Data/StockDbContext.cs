@@ -25,31 +25,57 @@ namespace StockManagementSystem.Data
                 if (File.Exists(scriptPath))
                 {
                     string script = File.ReadAllText(scriptPath);
-                    string[] commands = script.Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] batches = script.Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
 
                     // 使用master数据库连接
                     string masterConnectionString = connectionString.Replace("Initial Catalog=StockManagementDB;", "Initial Catalog=master;");
 
-                    foreach (string command in commands)
+                    // 首先执行数据库创建语句（在master数据库上下文中）
+                    using (SqlConnection masterConnection = new SqlConnection(masterConnectionString))
                     {
-                        if (!string.IsNullOrWhiteSpace(command))
+                        try
                         {
-                            using (SqlConnection connection = new SqlConnection(masterConnectionString))
+                            masterConnection.Open();
+                            using (SqlCommand createDbCommand = new SqlCommand(batches[0], masterConnection))
                             {
-                                using (SqlCommand sqlCommand = new SqlCommand(command, connection))
+                                createDbCommand.ExecuteNonQuery();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // 如果数据库已存在，会抛出异常，但可以忽略这个异常
+                            Console.WriteLine("创建数据库时出现消息: " + ex.Message);
+                        }
+                    }
+
+                    // 执行后续的表创建脚本（使用StockManagementDB连接）
+                    using (SqlConnection dbConnection = new SqlConnection(connectionString))
+                    {
+                        try
+                        {
+                            dbConnection.Open();
+                            // 从第二个批次开始执行，因为第一个批次是创建数据库
+                            for (int i = 1; i < batches.Length; i++)
+                            {
+                                if (!string.IsNullOrWhiteSpace(batches[i]))
                                 {
-                                    try
+                                    using (SqlCommand tableCommand = new SqlCommand(batches[i], dbConnection))
                                     {
-                                        connection.Open();
-                                        sqlCommand.ExecuteNonQuery();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        // 记录日志
-                                        Console.WriteLine("执行脚本时发生错误: " + ex.Message);
+                                        try
+                                        {
+                                            tableCommand.ExecuteNonQuery();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine($"执行第{i + 1}个批次脚本时发生错误: " + ex.Message);
+                                        }
                                     }
                                 }
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"连接到StockManagementDB数据库时发生错误: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }

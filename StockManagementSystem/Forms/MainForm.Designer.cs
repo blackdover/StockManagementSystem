@@ -73,6 +73,7 @@
             this.toolStrip1.Size = new System.Drawing.Size(1476, 38);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip1.Stretch = true;
             // 
             // toolStripButtonAddStock
             // 
@@ -81,6 +82,7 @@
             this.toolStripButtonAddStock.Name = "toolStripButtonAddStock";
             this.toolStripButtonAddStock.Size = new System.Drawing.Size(86, 33);
             this.toolStripButtonAddStock.Text = "添加股票";
+            this.toolStripButtonAddStock.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             // 
             // toolStripButtonEditStock
             // 
@@ -89,6 +91,7 @@
             this.toolStripButtonEditStock.Name = "toolStripButtonEditStock";
             this.toolStripButtonEditStock.Size = new System.Drawing.Size(86, 33);
             this.toolStripButtonEditStock.Text = "编辑股票";
+            this.toolStripButtonEditStock.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             // 
             // toolStripButtonDeleteStock
             // 
@@ -97,18 +100,21 @@
             this.toolStripButtonDeleteStock.Name = "toolStripButtonDeleteStock";
             this.toolStripButtonDeleteStock.Size = new System.Drawing.Size(86, 33);
             this.toolStripButtonDeleteStock.Text = "删除股票";
+            this.toolStripButtonDeleteStock.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             // 
             // toolStripButtonViewPrice
             // 
             this.toolStripButtonViewPrice.Name = "toolStripButtonViewPrice";
             this.toolStripButtonViewPrice.Size = new System.Drawing.Size(86, 33);
             this.toolStripButtonViewPrice.Text = "查看行情";
+            this.toolStripButtonViewPrice.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             // 
             // toolStripButtonFilter
             // 
             this.toolStripButtonFilter.Name = "toolStripButtonFilter";
             this.toolStripButtonFilter.Size = new System.Drawing.Size(86, 33);
             this.toolStripButtonFilter.Text = "股票筛选";
+            this.toolStripButtonFilter.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             // 
             // toolStripButtonDataIO
             // 
@@ -117,6 +123,7 @@
             this.toolStripButtonDataIO.Name = "toolStripButtonDataIO";
             this.toolStripButtonDataIO.Size = new System.Drawing.Size(122, 33);
             this.toolStripButtonDataIO.Text = "数据导入导出";
+            this.toolStripButtonDataIO.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             // 
             // toolStripButtonExit
             // 
@@ -125,6 +132,8 @@
             this.toolStripButtonExit.Name = "toolStripButtonExit";
             this.toolStripButtonExit.Size = new System.Drawing.Size(50, 33);
             this.toolStripButtonExit.Text = "退出";
+            this.toolStripButtonExit.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.toolStripButtonExit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripButtonExit.Click += new System.EventHandler(this.toolStripButtonExit_Click);
             // 
             // statusStrip1
@@ -189,32 +198,32 @@
             // columnHeaderId
             // 
             this.columnHeaderId.Text = "ID";
-            this.columnHeaderId.Width = 50;
+            this.columnHeaderId.Width = 70;
             // 
             // columnHeaderCode
             // 
             this.columnHeaderCode.Text = "股票代码";
-            this.columnHeaderCode.Width = 100;
+            this.columnHeaderCode.Width = 120;
             // 
             // columnHeaderName
             // 
             this.columnHeaderName.Text = "股票名称";
-            this.columnHeaderName.Width = 150;
+            this.columnHeaderName.Width = 180;
             // 
             // columnHeaderType
             // 
             this.columnHeaderType.Text = "股票类型";
-            this.columnHeaderType.Width = 100;
+            this.columnHeaderType.Width = 120;
             // 
             // columnHeaderIndustry
             // 
             this.columnHeaderIndustry.Text = "所属行业";
-            this.columnHeaderIndustry.Width = 150;
+            this.columnHeaderIndustry.Width = 180;
             // 
             // columnHeaderDescription
             // 
             this.columnHeaderDescription.Text = "股票描述";
-            this.columnHeaderDescription.Width = 300;
+            this.columnHeaderDescription.Width = 800;
             // 
             // dataGridViewPrices
             // 

@@ -32,9 +32,53 @@ namespace StockManagementSystem
 
             // 绑定ListView选择事件
             listViewStocks.SelectedIndexChanged += listViewStocks_SelectedIndexChanged;
+            
+            // 绑定窗口大小改变事件，自动调整列宽
+            this.SizeChanged += MainForm_SizeChanged;
+            this.Resize += MainForm_Resize;
 
             // 初始化股票图表
             InitializeStockChart();
+        }
+
+        /// <summary>
+        /// 窗口大小改变时自动调整列宽
+        /// </summary>
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            AdjustColumnWidths();
+        }
+
+        /// <summary>
+        /// 窗口大小改变时自动调整列宽
+        /// </summary>
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            AdjustColumnWidths();
+        }
+
+        /// <summary>
+        /// 调整列表视图列宽
+        /// </summary>
+        private void AdjustColumnWidths()
+        {
+            if (listViewStocks.Columns.Count == 0) return;
+
+            // 获取ListView的可见宽度（减去滚动条宽度）
+            int totalWidth = listViewStocks.ClientSize.Width - SystemInformation.VerticalScrollBarWidth;
+            
+            // 定义各列的相对宽度比例
+            int[] columnRatios = new int[] { 5, 10, 15, 10, 15, 45 }; // ID, 代码, 名称, 类型, 行业, 描述
+            int totalRatio = columnRatios.Sum();
+            
+            // 根据比例计算并设置各列宽度
+            for (int i = 0; i < listViewStocks.Columns.Count; i++)
+            {
+                if (i < columnRatios.Length)
+                {
+                    listViewStocks.Columns[i].Width = (int)(totalWidth * columnRatios[i] / totalRatio);
+                }
+            }
         }
 
         /// <summary>
@@ -75,6 +119,9 @@ namespace StockManagementSystem
                 // 确保选中项可见
                 listViewStocks.EnsureVisible(0);
             }
+            
+            // 调整列宽以填满窗口
+            AdjustColumnWidths();
         }
 
         /// <summary>

@@ -16,19 +16,9 @@ namespace StockManagementSystem.Data
         /// <summary>
         /// 初始化连接字符串
         /// </summary>
-        /// <param name="connStr">连接字符串名或连接字符串</param>
         public static void InitConnString(string connStr)
         {
-            try
-            {
-                // 尝试获取配置中的连接字符串
-                connectionString = ConfigurationManager.ConnectionStrings[connStr]?.ConnectionString ?? connStr;
-            }
-            catch
-            {
-                // 如果获取失败，直接使用传入的字符串
-                connectionString = connStr;
-            }
+            connectionString = connStr;
         }
 
         /// <summary>

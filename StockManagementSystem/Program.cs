@@ -12,11 +12,12 @@ namespace StockManagementSystem
         [STAThread]
         static void Main()
         {
-            // 数据库连接字符串
-            SqlHelper.InitConnString("Data Source=.;Initial Catalog=StockManagementDB;Integrated Security=True;MultipleActiveResultSets=True");
 
             // 初始化数据库
             DatabaseInitializer.InitializeDatabase();
+
+            // 连接数据库
+            SqlHelper.InitConnString("Data Source=.;Initial Catalog=StockManagementDB;Integrated Security=True;MultipleActiveResultSets=True");
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

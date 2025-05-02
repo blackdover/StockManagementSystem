@@ -101,10 +101,16 @@ namespace StockManagementSystem.Services
         {
             try
             {
-                string sql = "DELETE FROM Stocks WHERE StockId = @StockId";
-                SqlParameter parameter = new SqlParameter("@StockId", stockId);
+                // 首先删除关联的股票价格记录
+                string deletePricesSql = "DELETE FROM StockPrices WHERE StockId = @StockId";
+                SqlParameter priceParameter = new SqlParameter("@StockId", stockId);
+                SqlHelper.ExecuteNonQuery(deletePricesSql, priceParameter);
 
-                int result = SqlHelper.ExecuteNonQuery(sql, parameter);
+                // 然后删除股票记录
+                string deleteStockSql = "DELETE FROM Stocks WHERE StockId = @StockId";
+                SqlParameter stockParameter = new SqlParameter("@StockId", stockId);
+
+                int result = SqlHelper.ExecuteNonQuery(deleteStockSql, stockParameter);
                 return result > 0;
             }
             catch (Exception)
@@ -312,6 +318,109 @@ namespace StockManagementSystem.Services
                 stocks.Add(ConvertToStock(row));
             }
             return stocks;
+        }
+
+        /// <summary>
+        /// 批量添加股票
+        /// </summary>
+        /// <param name="stocks">股票列表</param>
+        /// <param name="progressCallback">进度回调函数，参数为(当前进度,总数量)</param>
+        /// <returns>成功添加的记录数</returns>
+        public int AddStocksBatch(List<Stock> stocks, Action<int, int> progressCallback = null)
+        {
+            if (stocks == null || stocks.Count == 0)
+                return 0;
+
+            int successCount = 0;
+            int totalCount = stocks.Count;
+            try
+            {
+                // 使用事务来批量插入数据
+                using (SqlConnection connection = new SqlConnection(SqlHelper.GetConnectionString()))
+                {
+                    connection.Open();
+                    SqlTransaction transaction = connection.BeginTransaction();
+                    try
+                    {
+                        using (SqlCommand command = new SqlCommand())
+                        {
+                            command.Connection = connection;
+                            command.Transaction = transaction;
+                            command.CommandText = @"INSERT INTO Stocks 
+                                              (Code, Name, Type, Industry, ListingDate, Description, CreateTime, UpdateTime)
+                                              VALUES 
+                                              (@Code, @Name, @Type, @Industry, @ListingDate, @Description, @CreateTime, @UpdateTime)";
+
+                            // 创建参数
+                            command.Parameters.Add("@Code", SqlDbType.NVarChar, 10);
+                            command.Parameters.Add("@Name", SqlDbType.NVarChar, 50);
+                            command.Parameters.Add("@Type", SqlDbType.NVarChar, 20);
+                            command.Parameters.Add("@Industry", SqlDbType.NVarChar, 50);
+                            command.Parameters.Add("@ListingDate", SqlDbType.DateTime);
+                            command.Parameters.Add("@Description", SqlDbType.NVarChar, -1);
+                            command.Parameters.Add("@CreateTime", SqlDbType.DateTime);
+                            command.Parameters.Add("@UpdateTime", SqlDbType.DateTime);
+
+                            // 批量执行
+                            const int batchCommitSize = 1000; // 每1000条提交一次事务
+                            int batchCount = 0;
+
+                            for (int i = 0; i < stocks.Count; i++)
+                            {
+                                var stock = stocks[i];
+                                command.Parameters["@Code"].Value = stock.Code;
+                                command.Parameters["@Name"].Value = stock.Name;
+                                command.Parameters["@Type"].Value = stock.Type ?? (object)DBNull.Value;
+                                command.Parameters["@Industry"].Value = stock.Industry ?? (object)DBNull.Value;
+                                command.Parameters["@ListingDate"].Value = stock.ListingDate;
+                                command.Parameters["@Description"].Value = stock.Description ?? (object)DBNull.Value;
+                                command.Parameters["@CreateTime"].Value = DateTime.Now;
+                                command.Parameters["@UpdateTime"].Value = DateTime.Now;
+
+                                int result = command.ExecuteNonQuery();
+                                if (result > 0)
+                                {
+                                    successCount++;
+                                }
+
+                                batchCount++;
+
+                                // 每处理100条数据报告一次进度
+                                if (i % 100 == 0 && progressCallback != null)
+                                {
+                                    progressCallback(i, totalCount);
+                                }
+
+                                // 如果达到批处理大小，执行一次中间提交
+                                if (batchCount >= batchCommitSize)
+                                {
+                                    transaction.Commit();
+                                    // 创建新事务继续处理
+                                    transaction = connection.BeginTransaction();
+                                    command.Transaction = transaction;
+                                    batchCount = 0;
+                                }
+                            }
+
+                            // 最终提交
+                            transaction.Commit();
+
+                            // 最后一次进度回调
+                            progressCallback?.Invoke(totalCount, totalCount);
+                        }
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+                return successCount;
+            }
+            catch (Exception)
+            {
+                return successCount;
+            }
         }
 
         /// <summary>

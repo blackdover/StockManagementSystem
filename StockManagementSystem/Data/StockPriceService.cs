@@ -86,6 +86,113 @@ namespace StockManagementSystem.Services
         }
 
         /// <summary>
+        /// 批量添加股票行情记录（使用事务提高性能）
+        /// </summary>
+        /// <param name="stockPrices">股票行情对象列表</param>
+        /// <param name="progressCallback">进度回调函数，参数为(当前进度,总数量)</param>
+        /// <returns>添加成功的记录数</returns>
+        public int AddStockPricesBatch(List<StockPrice> stockPrices, Action<int, int> progressCallback = null)
+        {
+            if (stockPrices == null || stockPrices.Count == 0)
+                return 0;
+
+            int successCount = 0;
+            int totalCount = stockPrices.Count;
+            try
+            {
+                // 使用事务来批量插入数据
+                using (SqlConnection connection = new SqlConnection(SqlHelper.GetConnectionString()))
+                {
+                    connection.Open();
+                    SqlTransaction transaction = connection.BeginTransaction();
+                    try
+                    {
+                        using (SqlCommand command = new SqlCommand())
+                        {
+                            command.Connection = connection;
+                            command.Transaction = transaction;
+                            command.CommandText = @"INSERT INTO StockPrices 
+                                              (StockId, TradeDate, OpenPrice, ClosePrice, HighPrice, LowPrice, Volume, Amount, ChangePercent, CreateTime) 
+                                              VALUES 
+                                              (@StockId, @TradeDate, @OpenPrice, @ClosePrice, @HighPrice, @LowPrice, @Volume, @Amount, @ChangePercent, @CreateTime)";
+
+                            // 创建参数
+                            command.Parameters.Add("@StockId", SqlDbType.Int);
+                            command.Parameters.Add("@TradeDate", SqlDbType.DateTime);
+                            command.Parameters.Add("@OpenPrice", SqlDbType.Decimal);
+                            command.Parameters.Add("@ClosePrice", SqlDbType.Decimal);
+                            command.Parameters.Add("@HighPrice", SqlDbType.Decimal);
+                            command.Parameters.Add("@LowPrice", SqlDbType.Decimal);
+                            command.Parameters.Add("@Volume", SqlDbType.BigInt);
+                            command.Parameters.Add("@Amount", SqlDbType.Decimal);
+                            command.Parameters.Add("@ChangePercent", SqlDbType.Decimal);
+                            command.Parameters.Add("@CreateTime", SqlDbType.DateTime);
+
+                            // 批量执行
+                            const int batchCommitSize = 1000; // 每1000条提交一次事务
+                            int batchCount = 0;
+
+                            for (int i = 0; i < stockPrices.Count; i++)
+                            {
+                                var price = stockPrices[i];
+                                command.Parameters["@StockId"].Value = price.StockId;
+                                command.Parameters["@TradeDate"].Value = price.TradeDate;
+                                command.Parameters["@OpenPrice"].Value = price.OpenPrice;
+                                command.Parameters["@ClosePrice"].Value = price.ClosePrice;
+                                command.Parameters["@HighPrice"].Value = price.HighPrice;
+                                command.Parameters["@LowPrice"].Value = price.LowPrice;
+                                command.Parameters["@Volume"].Value = price.Volume;
+                                command.Parameters["@Amount"].Value = price.Amount;
+                                command.Parameters["@ChangePercent"].Value = price.ChangePercent;
+                                command.Parameters["@CreateTime"].Value = DateTime.Now;
+
+                                int result = command.ExecuteNonQuery();
+                                if (result > 0)
+                                {
+                                    successCount++;
+                                }
+
+                                batchCount++;
+
+                                // 每处理100条数据报告一次进度
+                                if (i % 100 == 0 && progressCallback != null)
+                                {
+                                    progressCallback(i, totalCount);
+                                }
+
+                                // 如果达到批处理大小，执行一次中间提交
+                                if (batchCount >= batchCommitSize)
+                                {
+                                    transaction.Commit();
+                                    // 创建新事务继续处理
+                                    transaction = connection.BeginTransaction();
+                                    command.Transaction = transaction;
+                                    batchCount = 0;
+                                }
+                            }
+
+                            // 提交剩余的事务
+                            transaction.Commit();
+
+                            // 最后一次进度回调
+                            progressCallback?.Invoke(totalCount, totalCount);
+                        }
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+                return successCount;
+            }
+            catch (Exception)
+            {
+                return successCount;
+            }
+        }
+
+        /// <summary>
         /// 更新股票行情记录
         /// </summary>
         /// <param name="stockPrice">股票行情对象</param>
@@ -371,6 +478,41 @@ namespace StockManagementSystem.Services
                 TotalAmount = totalAmount,
                 AverageVolume = avgVolume
             };
+        }
+
+        /// <summary>
+        /// 获取最小价格数据，只返回StockId和TradeDate，用于快速检查重复
+        /// </summary>
+        /// <param name="stockIds">股票ID列表</param>
+        /// <returns>元组列表(StockId, TradeDate)</returns>
+        public List<Tuple<int, DateTime>> GetMinimalPriceData(List<int> stockIds)
+        {
+            try
+            {
+                if (stockIds == null || stockIds.Count == 0)
+                    return new List<Tuple<int, DateTime>>();
+
+                // 将ID列表转换为以逗号分隔的字符串
+                string stockIdsStr = string.Join(",", stockIds);
+
+                string sql = $"SELECT StockId, TradeDate FROM StockPrices WHERE StockId IN ({stockIdsStr})";
+
+                DataTable dt = SqlHelper.ExecuteQuery(sql);
+                List<Tuple<int, DateTime>> result = new List<Tuple<int, DateTime>>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    int stockId = Convert.ToInt32(row["StockId"]);
+                    DateTime tradeDate = Convert.ToDateTime(row["TradeDate"]);
+                    result.Add(new Tuple<int, DateTime>(stockId, tradeDate));
+                }
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return new List<Tuple<int, DateTime>>();
+            }
         }
 
         /// <summary>

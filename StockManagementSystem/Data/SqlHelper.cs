@@ -117,5 +117,14 @@ namespace StockManagementSystem.Data
                 }
             }
         }
+
+        /// <summary>
+        /// 获取连接字符串
+        /// </summary>
+        /// <returns>数据库连接字符串</returns>
+        public static string GetConnectionString()
+        {
+            return connectionString;
+        }
     }
 }

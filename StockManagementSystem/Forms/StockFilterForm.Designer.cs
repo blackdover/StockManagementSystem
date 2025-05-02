@@ -48,7 +48,6 @@ namespace StockManagementSystem
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBoxFilters.SuspendLayout();
             this.groupBoxResults.SuspendLayout();
@@ -56,7 +55,7 @@ namespace StockManagementSystem
             // 
             // groupBoxFilters
             // 
-            this.groupBoxFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.groupBoxFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxFilters.Controls.Add(this.btnReset);
             this.groupBoxFilters.Controls.Add(this.btnFilter);
@@ -143,7 +142,7 @@ namespace StockManagementSystem
             this.label4.Location = new System.Drawing.Point(12, 30);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(80, 18);
+            this.label4.Size = new System.Drawing.Size(89, 18);
             this.label4.TabIndex = 6;
             this.label4.Text = "股票代码:";
             // 
@@ -153,7 +152,7 @@ namespace StockManagementSystem
             this.label3.Location = new System.Drawing.Point(384, 30);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 18);
+            this.label3.Size = new System.Drawing.Size(89, 18);
             this.label3.TabIndex = 7;
             this.label3.Text = "股票名称:";
             // 
@@ -163,7 +162,7 @@ namespace StockManagementSystem
             this.label2.Location = new System.Drawing.Point(384, 65);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 18);
+            this.label2.Size = new System.Drawing.Size(89, 18);
             this.label2.TabIndex = 2;
             this.label2.Text = "股票类型:";
             // 
@@ -173,14 +172,14 @@ namespace StockManagementSystem
             this.label1.Location = new System.Drawing.Point(12, 65);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 18);
+            this.label1.Size = new System.Drawing.Size(89, 18);
             this.label1.TabIndex = 0;
             this.label1.Text = "所属行业:";
             // 
             // groupBoxResults
             // 
-            this.groupBoxResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.groupBoxResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxResults.Controls.Add(this.lblResultCount);
             this.groupBoxResults.Controls.Add(this.listViewFilteredStocks);
@@ -205,8 +204,8 @@ namespace StockManagementSystem
             // 
             // listViewFilteredStocks
             // 
-            this.listViewFilteredStocks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.listViewFilteredStocks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewFilteredStocks.CheckBoxes = true;
             this.listViewFilteredStocks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -270,18 +269,6 @@ namespace StockManagementSystem
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // btnOK
-            // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(900, 600);
-            this.btnOK.Margin = new System.Windows.Forms.Padding(4);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(112, 34);
-            this.btnOK.TabIndex = 4;
-            this.btnOK.Text = "确定";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -303,7 +290,6 @@ namespace StockManagementSystem
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(1148, 650);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnSelectAll);
             this.Controls.Add(this.groupBoxResults);
@@ -344,7 +330,6 @@ namespace StockManagementSystem
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.Button btnSelectAll;
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
     }
 }

@@ -137,8 +137,33 @@ namespace StockManagementSystem
             // 获取选中的股票
             if (listViewFilteredStocks.SelectedItems.Count > 0)
             {
-                SelectedStock = listViewFilteredStocks.SelectedItems[0].Tag as Stock;
-                DialogResult = DialogResult.OK;
+                var stockViewModel = listViewFilteredStocks.SelectedItems[0].Tag as StockViewModel;
+                if (stockViewModel != null)
+                {
+                    try
+                    {
+                        // 获取完整的Stock对象
+                        SelectedStock = _stockService.GetStockById(stockViewModel.Id);
+
+                        // 检查是否成功获取到Stock对象
+                        if (SelectedStock == null)
+                        {
+                            MessageBox.Show($"无法获取ID为{stockViewModel.Id}的股票详细信息", "数据错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        // 设置对话框结果并关闭
+                        DialogResult = DialogResult.OK;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"获取股票信息时发生错误：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("股票数据异常，请重新选择", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             else
             {
@@ -156,8 +181,29 @@ namespace StockManagementSystem
             // 双击选择股票并确认
             if (listViewFilteredStocks.SelectedItems.Count > 0)
             {
-                SelectedStock = listViewFilteredStocks.SelectedItems[0].Tag as Stock;
-                DialogResult = DialogResult.OK;
+                var stockViewModel = listViewFilteredStocks.SelectedItems[0].Tag as StockViewModel;
+                if (stockViewModel != null)
+                {
+                    try
+                    {
+                        // 获取完整的Stock对象
+                        SelectedStock = _stockService.GetStockById(stockViewModel.Id);
+
+                        // 检查是否成功获取到Stock对象
+                        if (SelectedStock == null)
+                        {
+                            MessageBox.Show($"无法获取ID为{stockViewModel.Id}的股票详细信息", "数据错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        // 设置对话框结果并关闭
+                        DialogResult = DialogResult.OK;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"获取股票信息时发生错误：{ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
 

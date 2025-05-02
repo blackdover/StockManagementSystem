@@ -480,11 +480,26 @@ namespace StockManagementSystem.Forms
                             if (dataGridViewPrices.Columns[i].Visible)
                             {
                                 string value = row.Cells[i].Value?.ToString() ?? "";
+
+                                // 处理特殊格式
+                                string columnName = dataGridViewPrices.Columns[i].HeaderText;
+
+                                // 特殊处理股票代码列，确保前导零保留
+                                if (columnName == "代码")
+                                {
+                                    value = $"=\"{value}\"";
+                                }
+                                // 特殊处理日期列，用引号包裹确保正确识别
+                                else if (columnName == "日期" && DateTime.TryParse(value, out DateTime date))
+                                {
+                                    value = $"\"{date:yyyy-MM-dd}\"";
+                                }
                                 // 如果值包含逗号，用引号括起来
-                                if (value.Contains(","))
+                                else if (value.Contains(","))
                                 {
                                     value = $"\"{value}\"";
                                 }
+
                                 cells.Add(value);
                             }
                         }

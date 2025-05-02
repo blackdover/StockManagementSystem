@@ -133,8 +133,10 @@ namespace StockManagementSystem.Forms
                         // 将日期格式修改为年-月-日格式，并用引号包裹，避免Excel显示######
                         string formattedDate = $"\"{stock.ListingDate:yyyy-MM-dd}\"";
                         string description = stock.Description?.Replace(",", " ") ?? "";
+                        // 在股票代码前添加等号和引号，确保Excel将其视为文本并保留前导零
+                        string formattedCode = $"=\"{stock.Code}\"";
 
-                        sb.AppendLine($"{stock.StockId},{stock.Code},{stock.Name},{stock.Type},{stock.Industry},{formattedDate},{description}");
+                        sb.AppendLine($"{stock.StockId},{formattedCode},{stock.Name},{stock.Type},{stock.Industry},{formattedDate},{description}");
                     }
 
                     // 写入文件
@@ -207,8 +209,10 @@ namespace StockManagementSystem.Forms
                         string stockCode = stocks.ContainsKey(price.StockId) ? stocks[price.StockId].Code : price.StockId.ToString();
                         // 将日期格式修改为年-月-日格式，并用引号包裹，避免Excel显示######
                         string formattedDate = $"\"{price.TradeDate:yyyy-MM-dd}\"";
+                        // 在股票代码前添加等号和引号，确保Excel将其视为文本并保留前导零
+                        string formattedCode = $"=\"{stockCode}\"";
 
-                        sb.AppendLine($"{price.StockId},{stockCode},{formattedDate},{price.OpenPrice},{price.ClosePrice},{price.HighPrice},{price.LowPrice},{price.Volume},{price.Amount},{price.ChangePercent}");
+                        sb.AppendLine($"{price.StockId},{formattedCode},{formattedDate},{price.OpenPrice},{price.ClosePrice},{price.HighPrice},{price.LowPrice},{price.Volume},{price.Amount},{price.ChangePercent}");
                     }
 
                     // 写入文件
@@ -348,7 +352,7 @@ namespace StockManagementSystem.Forms
                                 if (isNewFormat)
                                 {
                                     // 新格式: Code,Name,Type,Industry,ListingDate,Description,CreateTime,UpdateTime
-                                    code = fields[0].Trim();
+                                    code = fields[0].Trim().Trim('"'); // 删除可能存在的引号
                                     name = fields[1].Trim();
                                     type = fields[2].Trim();
                                     industry = fields[3].Trim();
@@ -356,7 +360,7 @@ namespace StockManagementSystem.Forms
                                     // 解析上市日期，如果无法解析则使用当前日期
                                     if (fields.Length > 4 && !fields[4].Contains("#"))
                                     {
-                                        TryParseDate(fields[4].Trim(), out listingDate);
+                                        TryParseDate(fields[4].Trim().Trim('"'), out listingDate);
                                     }
 
                                     // 描述字段
@@ -368,7 +372,7 @@ namespace StockManagementSystem.Forms
                                 else
                                 {
                                     // 原格式: ID,股票代码,股票名称,股票类型,所属行业,上市日期,描述
-                                    code = fields[1].Trim();
+                                    code = fields[1].Trim().Trim('"'); // 删除可能存在的引号
                                     name = fields[2].Trim();
                                     type = fields[3].Trim();
                                     industry = fields[4].Trim();
@@ -849,25 +853,46 @@ namespace StockManagementSystem.Forms
             statusStrip1.Refresh();
         }
 
+        /// <summary>
+        /// 解析CSV行，支持引号字段
+        /// </summary>
         private string[] ParseCsvLine(string line)
         {
-            List<string> result = new List<string>();
+            if (string.IsNullOrEmpty(line))
+                return new string[0];
+
+            List<string> results = new List<string>();
             bool inQuotes = false;
             StringBuilder field = new StringBuilder();
 
+            // 遍历每个字符
             for (int i = 0; i < line.Length; i++)
             {
                 char c = line[i];
 
+                // 处理引号
                 if (c == '"')
                 {
-                    inQuotes = !inQuotes;
+                    // 如果是转义的引号 (""), 则添加一个引号到字段中
+                    if (inQuotes && i + 1 < line.Length && line[i + 1] == '"')
+                    {
+                        field.Append('"');
+                        i++; // 跳过下一个引号
+                    }
+                    else
+                    {
+                        // 切换引号状态
+                        inQuotes = !inQuotes;
+                    }
                 }
+                // 处理逗号
                 else if (c == ',' && !inQuotes)
                 {
-                    result.Add(field.ToString());
+                    // 字段结束，添加到结果中
+                    results.Add(field.ToString());
                     field.Clear();
                 }
+                // 普通字符
                 else
                 {
                     field.Append(c);
@@ -875,46 +900,61 @@ namespace StockManagementSystem.Forms
             }
 
             // 添加最后一个字段
-            result.Add(field.ToString());
+            results.Add(field.ToString());
 
-            return result.ToArray();
+            return results.ToArray();
         }
 
         /// <summary>
-        /// 智能解析日期，支持多种格式
+        /// 尝试解析日期字符串，支持多种格式
         /// </summary>
         private bool TryParseDate(string dateString, out DateTime result)
         {
             result = DateTime.Now;
 
-            // 已经是标准格式
-            if (DateTime.TryParse(dateString, out result))
-            {
-                return true;
-            }
-
-            // 处理包含#号的日期字符串
-            if (dateString.Contains("#"))
-            {
+            if (string.IsNullOrWhiteSpace(dateString))
                 return false;
-            }
 
-            // 尝试常见格式
-            string[] formats = new string[] {
-                "yyyy/M/d", "yyyy-M-d", "M/d/yyyy", "M-d-yyyy",
-                "yyyy.M.d", "d/M/yyyy", "d-M-yyyy", "d.M.yyyy",
-                "yyyyMMdd"
-            };
+            // 移除可能的引号
+            dateString = dateString.Trim('"');
 
-            foreach (var format in formats)
+            // 尝试直接解析
+            if (DateTime.TryParse(dateString, out result))
+                return true;
+
+            // 尝试ISO格式（YYYY-MM-DD）
+            try
             {
-                if (DateTime.TryParseExact(dateString, format, null, System.Globalization.DateTimeStyles.None, out result))
+                string[] parts = dateString.Split('-');
+                if (parts.Length == 3)
                 {
-                    return true;
+                    if (int.TryParse(parts[0], out int year) &&
+                        int.TryParse(parts[1], out int month) &&
+                        int.TryParse(parts[2], out int day))
+                    {
+                        if (year > 1900 && month >= 1 && month <= 12 && day >= 1 && day <= 31)
+                        {
+                            result = new DateTime(year, month, day);
+                            return true;
+                        }
+                    }
                 }
             }
+            catch
+            {
+                // 解析失败，继续尝试其他格式
+            }
 
-            return false;
+            // 尝试其他常见格式
+            string[] formats = {
+                "yyyy/MM/dd", "dd/MM/yyyy", "MM/dd/yyyy",
+                "yyyyMMdd", "ddMMyyyy", "MMddyyyy",
+                "yyyy.MM.dd", "dd.MM.yyyy", "MM.dd.yyyy"
+            };
+
+            return DateTime.TryParseExact(dateString, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out result);
         }
 
         private void checkBoxAllPrices_CheckedChanged(object sender, EventArgs e)
@@ -952,9 +992,9 @@ namespace StockManagementSystem.Forms
 
         #endregion
 
-        private void button1_Click(object sender, EventArgs e)
-        {
+        // private void button1_Click(object sender, EventArgs e)
+        // {
 
-        }
+        // }
     }
 }

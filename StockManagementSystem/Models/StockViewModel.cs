@@ -2,51 +2,31 @@ using System;
 
 namespace StockManagementSystem.Models
 {
-    /// <summary>
-    /// 股票信息视图模型，用于在UI中显示股票信息
-    /// </summary>
+    // 股票信息视图模型，用于在UI中显示股票信息
     public class StockViewModel
     {
-        /// <summary>
-        /// 股票ID
-        /// </summary>
+        // 股票ID
         public int Id { get; set; }
 
-        /// <summary>
-        /// 股票代码
-        /// </summary>
+        // 股票代码
         public string Code { get; set; }
 
-        /// <summary>
-        /// 股票名称
-        /// </summary>
+        // 股票名称
         public string Name { get; set; }
 
-        /// <summary>
-        /// 股票类型
-        /// </summary>
+        // 股票类型
         public string Type { get; set; }
 
-        /// <summary>
-        /// 所属行业
-        /// </summary>
+        // 所属行业
         public string Industry { get; set; }
 
-        /// <summary>
-        /// 上市日期
-        /// </summary>
+        // 上市日期
         public DateTime ListingDate { get; set; }
 
-        /// <summary>
-        /// 描述
-        /// </summary>
+        // 描述
         public string Description { get; set; }
 
-        /// <summary>
-        /// 从Stock对象创建StockViewModel对象
-        /// </summary>
-        /// <param name="stock">Stock对象</param>
-        /// <returns>StockViewModel对象</returns>
+        // 从Stock对象创建StockViewModel对象
         public static StockViewModel FromStock(Stock stock)
         {
             if (stock == null) return null;

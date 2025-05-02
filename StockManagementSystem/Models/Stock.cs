@@ -2,85 +2,36 @@ using System;
 
 namespace StockManagementSystem.Models
 {
-    /// <summary>
-    /// 股票类型枚举
-    /// </summary>
+    // 股票类型枚举
     public enum StockType
     {
-        /// <summary>
-        /// A股
-        /// </summary>
         A股,
-
-        /// <summary>
-        /// B股
-        /// </summary>
         B股,
-
-        /// <summary>
-        /// H股
-        /// </summary>
         H股,
-
-        /// <summary>
-        /// N股
-        /// </summary>
         N股,
-
-        /// <summary>
-        /// S股
-        /// </summary>
         S股,
-
-        /// <summary>
-        /// 创业板
-        /// </summary>
         创业板,
-
-        /// <summary>
-        /// 科创板
-        /// </summary>
         科创板,
-
-        /// <summary>
-        /// 新三板
-        /// </summary>
         新三板,
-
-        /// <summary>
-        /// 其他类型
-        /// </summary>
         其他
     }
 
-    /// <summary>
-    /// 股票信息模型类
-    /// </summary>
+    // 股票信息模型类
     public class Stock
     {
-        /// <summary>
-        /// 股票ID
-        /// </summary>
+        // 股票ID
         public int StockId { get; set; }
 
-        /// <summary>
-        /// 股票代码
-        /// </summary>
+        // 股票代码
         public string Code { get; set; }
 
-        /// <summary>
-        /// 股票名称
-        /// </summary>
+        // 股票名称
         public string Name { get; set; }
 
-        /// <summary>
-        /// 股票类型（例如：A股、B股等）- 字符串表示，用于兼容
-        /// </summary>
+        // 股票类型
         public string Type { get; set; }
 
-        /// <summary>
-        /// 股票类型枚举值
-        /// </summary>
+        // 股票类型枚举值
         public StockType StockTypeEnum
         {
             get
@@ -102,29 +53,19 @@ namespace StockManagementSystem.Models
             }
         }
 
-        /// <summary>
-        /// 所属行业
-        /// </summary>
+        // 所属行业
         public string Industry { get; set; }
 
-        /// <summary>
-        /// 上市日期
-        /// </summary>
+        // 上市日期
         public DateTime ListingDate { get; set; }
 
-        /// <summary>
-        /// 股票描述
-        /// </summary>
+        // 股票描述
         public string Description { get; set; }
 
-        /// <summary>
-        /// 创建时间
-        /// </summary>
+        // 创建时间
         public DateTime CreateTime { get; set; }
 
-        /// <summary>
-        /// 最后更新时间
-        /// </summary>
+        // 最后更新时间
         public DateTime UpdateTime { get; set; }
     }
 }

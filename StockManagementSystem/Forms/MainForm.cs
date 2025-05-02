@@ -20,6 +20,7 @@ namespace StockManagementSystem // 定义命名空间
     // partial关键字允许将类定义拆分到多个文件中，常用于分离设计器生成的代码和用户代码
     {
         private readonly StockService _stockService; // 声明股票服务私有只读字段，用于处理股票数据
+        //_表示私有字段，readonly表示只读，StockService表示字段类型
         private readonly StockPriceService _stockPriceService; // 声明股票价格服务私有只读字段，用于处理股票价格数据
         private System.Windows.Forms.DataVisualization.Charting.Chart stockChart; // 声明图表控件私有字段，用于显示股票价格走势
 
@@ -45,7 +46,7 @@ namespace StockManagementSystem // 定义命名空间
         /// <summary>
         /// 窗口大小改变时自动调整列宽
         /// </summary>
-        private void MainForm_SizeChanged(object sender, EventArgs e) // 窗口大小变化事件处理方法
+        private void MainForm_SizeChanged(object sender, EventArgs e) // 窗口大小变化事件处理方法，sender参数表示触发事件的对象，e参数包含事件数据
         {
             AdjustColumnWidths(); // 调用调整列宽方法
         }
@@ -66,18 +67,22 @@ namespace StockManagementSystem // 定义命名空间
             if (listViewStocks.Columns.Count == 0) return; // 如果列表没有列，直接返回，避免后续操作出错
 
             // 获取ListView的可见宽度（减去滚动条宽度）
+            // listViewStocks是一个用于显示股票信息的控件，类似于表格，可以显示多列数据
+            // 计算公式中的listViewStocks.ClientSize.Width表示ListView的客户区宽度
+            // SystemInformation.VerticalScrollBarWidth表示垂直滚动条的宽度
+            // 计算可用总宽度时，需要减去滚动条的宽度，以确保列宽计算时不被滚动条遮挡
             int totalWidth = listViewStocks.ClientSize.Width - SystemInformation.VerticalScrollBarWidth; // 计算可用总宽度
 
             // 定义各列的相对宽度比例
             int[] columnRatios = new int[] { 5, 10, 15, 10, 15, 45 }; // ID, 代码, 名称, 类型, 行业, 描述的宽度比例
             int totalRatio = columnRatios.Sum(); // 计算总比例，使用LINQ的Sum方法
-
+            // 计算总比例时，使用LINQ的Sum方法，将所有列宽比例相加，得到总比例
             // 根据比例计算并设置各列宽度
             for (int i = 0; i < listViewStocks.Columns.Count; i++) // 遍历所有列
             {
                 if (i < columnRatios.Length) // 确保索引在比例数组范围内
                 {
-                    listViewStocks.Columns[i].Width = (int)(totalWidth * columnRatios[i] / totalRatio); // 根据比例计算列宽
+                    listViewStocks.Columns[i].Width = (int)(totalWidth * columnRatios[i] / totalRatio); // 根据比例计算列宽，实际宽度等于总宽度*比例
                 }
             }
         }
@@ -89,6 +94,7 @@ namespace StockManagementSystem // 定义命名空间
         {
             // 创建图表控件
             stockChart = new System.Windows.Forms.DataVisualization.Charting.Chart(); // 实例化图表对象
+            // Dock属性用于指定控件在其父容器中的停靠位置。DockStyle.Fill表示控件将填充整个容器。
             stockChart.Dock = DockStyle.Fill; // 设置图表填充整个容器
 
             // 创建图表区域

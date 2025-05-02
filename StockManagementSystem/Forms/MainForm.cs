@@ -29,17 +29,6 @@ namespace StockManagementSystem // 定义命名空间
             _stockService = new StockService(); // 实例化股票服务对象
             _stockPriceService = new StockPriceService(); // 实例化股票价格服务对象
 
-            // 绑定工具栏按钮事件，将按钮点击与对应的处理方法关联
-            toolStripButtonAddStock.Click += btnAddStock_Click; // 添加股票按钮点击事件绑定
-            toolStripButtonEditStock.Click += btnEditStock_Click; // 编辑股票按钮点击事件绑定
-            toolStripButtonDeleteStock.Click += btnDeleteStock_Click; // 删除股票按钮点击事件绑定
-            toolStripButtonViewPrice.Click += btnViewStockPrice_Click; // 查看价格按钮点击事件绑定
-            toolStripButtonFilter.Click += btnStockFilter_Click; // 筛选按钮点击事件绑定
-            toolStripButtonDataIO.Click += btnDataIO_Click; // 数据导入导出按钮点击事件绑定
-
-            // 绑定ListView选择事件，当选中项变化时触发
-            listViewStocks.SelectedIndexChanged += listViewStocks_SelectedIndexChanged; // 股票列表选择变更事件绑定
-
             // 绑定窗口大小改变事件，自动调整列宽
             this.SizeChanged += MainForm_SizeChanged; // 窗口大小变化事件绑定
             this.Resize += MainForm_Resize; // 窗口调整大小事件绑定
@@ -165,7 +154,7 @@ namespace StockManagementSystem // 定义命名空间
         /// <summary>
         /// 股票列表选择变更
         /// </summary>
-        private void listViewStocks_SelectedIndexChanged(object sender, EventArgs e) // 列表选择变更事件处理方法
+        private void listViewStocks_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             if (listViewStocks.SelectedItems.Count > 0) // 检查是否有选中项
             {
@@ -309,7 +298,7 @@ namespace StockManagementSystem // 定义命名空间
         /// <summary>
         /// 添加股票信息
         /// </summary>
-        private void btnAddStock_Click(object sender, EventArgs e) // 添加股票按钮点击事件处理方法
+        private void toolStripButtonAddStock_Click(object sender, EventArgs e)
         {
             using (var form = new StockEditForm(_stockService)) // 创建股票编辑窗体，并在使用完后自动释放资源
             {
@@ -323,7 +312,7 @@ namespace StockManagementSystem // 定义命名空间
         /// <summary>
         /// 编辑股票信息
         /// </summary>
-        private void btnEditStock_Click(object sender, EventArgs e) // 编辑股票按钮点击事件处理方法
+        private void toolStripButtonEditStock_Click(object sender, EventArgs e)
         {
             if (listViewStocks.SelectedItems.Count == 0) // 检查是否有选中项
             {
@@ -344,7 +333,7 @@ namespace StockManagementSystem // 定义命名空间
         /// <summary>
         /// 删除股票信息
         /// </summary>
-        private void btnDeleteStock_Click(object sender, EventArgs e) // 删除股票按钮点击事件处理方法
+        private void toolStripButtonDeleteStock_Click(object sender, EventArgs e)
         {
             if (listViewStocks.SelectedItems.Count == 0) // 检查是否有选中项
             {
@@ -383,7 +372,7 @@ namespace StockManagementSystem // 定义命名空间
         /// <summary>
         /// 查看股票行情
         /// </summary>
-        private void btnViewStockPrice_Click(object sender, EventArgs e) // 查看股票行情按钮点击事件处理方法
+        private void toolStripButtonViewPrice_Click(object sender, EventArgs e)
         {
             // 获取当前选中的股票ID
             int? selectedStockId = null; // 声明可空整型变量存储选中的股票ID
@@ -407,7 +396,7 @@ namespace StockManagementSystem // 定义命名空间
         /// <summary>
         /// 启动股票筛选
         /// </summary>
-        private void btnStockFilter_Click(object sender, EventArgs e) // 股票筛选按钮点击事件处理方法
+        private void toolStripButtonFilter_Click(object sender, EventArgs e)
         {
             using (var filterForm = new StockFilterForm()) // 创建股票筛选窗体
             {
@@ -440,7 +429,7 @@ namespace StockManagementSystem // 定义命名空间
         /// <summary>
         /// 启动数据导入导出功能
         /// </summary>
-        private void btnDataIO_Click(object sender, EventArgs e) // 数据导入导出按钮点击事件处理方法
+        private void toolStripButtonDataIO_Click(object sender, EventArgs e)
         {
             using (var dataIOForm = new DataIOForm()) // 创建数据导入导出窗体
             {
@@ -457,11 +446,6 @@ namespace StockManagementSystem // 定义命名空间
             // 释放资源
             _stockService.Dispose(); // 释放股票服务资源
             _stockPriceService.Dispose(); // 释放股票价格服务资源
-        }
-
-        private void toolStripButtonExit_Click(object sender, EventArgs e) // 退出按钮点击事件处理方法
-        {
-            // 此方法为空，可能是计划在此处添加退出应用程序的代码
         }
     }
 }

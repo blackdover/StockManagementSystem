@@ -2,6 +2,8 @@ using System;
 using System.Windows.Forms;
 using StockManagementSystem.Models;
 using StockManagementSystem.Services;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StockManagementSystem.Forms
 {
@@ -55,7 +57,22 @@ namespace StockManagementSystem.Forms
 
             // 填充行业下拉框
             cboIndustry.Items.Clear();
-            cboIndustry.Items.AddRange(industries);
+
+            // 获取数据库中的所有行业
+            List<string> dbIndustries = _stockService.GetAllIndustries();
+
+            // 合并预定义行业和数据库中的行业
+            HashSet<string> allIndustries = new HashSet<string>(industries);
+            foreach (string industry in dbIndustries)
+            {
+                allIndustries.Add(industry);
+            }
+
+            // 添加所有行业到下拉框
+            cboIndustry.Items.AddRange(allIndustries.OrderBy(i => i).ToArray());
+
+            // 设置行业下拉框为可编辑模式，允许输入不在预定义列表中的选项
+            cboIndustry.DropDownStyle = ComboBoxStyle.DropDown;
 
             // 如果是编辑，则填充现有数据
             if (!_isAdd)
@@ -72,11 +89,7 @@ namespace StockManagementSystem.Forms
                 // 设置行业下拉框选中项
                 if (!string.IsNullOrEmpty(_stock.Industry))
                 {
-                    int industryIndex = Array.IndexOf(industries, _stock.Industry);
-                    if (industryIndex >= 0)
-                        cboIndustry.SelectedIndex = industryIndex;
-                    else
-                        cboIndustry.Text = _stock.Industry; // 如果不在预定义列表中，直接显示文本
+                    cboIndustry.Text = _stock.Industry; // 直接设置文本，无论是否在列表中
                 }
 
                 dateTimePickerListingDate.Value = _stock.ListingDate;

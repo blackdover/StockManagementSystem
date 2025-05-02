@@ -230,13 +230,10 @@ namespace StockManagementSystem.Data
             }
         }
 
-        /// <summary>
-        /// 获取连接字符串
-        /// </summary>
-        /// <returns>数据库连接字符串</returns>
-        public static string GetConnectionString()
+        // 执行SQL查询，返回DataTable (别名，与ExecuteQuery功能相同)
+        public static DataTable ExecuteDataTable(string sql, params SqlParameter[] parameters)
         {
-            return connectionString;
+            return ExecuteQuery(sql, parameters);
         }
     }
 }

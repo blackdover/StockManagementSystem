@@ -10,7 +10,7 @@ namespace StockManagementSystem
         [STAThread]
         static void Main()
         {
-            // 初始化数据库 - 使用内置SQL脚本创建数据库和表
+            // 初始化数据库
             SqlHelper.InitializeDatabase();
 
             Application.EnableVisualStyles();

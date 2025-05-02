@@ -114,7 +114,7 @@ namespace StockManagementSystem.Forms
             // 
             // cboIndustry
             // 
-            this.cboIndustry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboIndustry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.cboIndustry.FormattingEnabled = true;
             this.cboIndustry.Location = new System.Drawing.Point(152, 187);
             this.cboIndustry.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);

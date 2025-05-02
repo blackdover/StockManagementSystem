@@ -424,6 +424,32 @@ namespace StockManagementSystem.Services
         }
 
         /// <summary>
+        /// 获取所有不重复的行业信息
+        /// </summary>
+        /// <returns>所有行业的列表</returns>
+        public List<string> GetAllIndustries()
+        {
+            try
+            {
+                string sql = "SELECT DISTINCT Industry FROM Stocks WHERE Industry IS NOT NULL AND Industry <> '' ORDER BY Industry";
+                DataTable dt = SqlHelper.ExecuteDataTable(sql);
+
+                List<string> industries = new List<string>();
+                foreach (DataRow row in dt.Rows)
+                {
+                    industries.Add(row["Industry"].ToString());
+                }
+
+                return industries;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("获取行业列表失败: " + ex.Message);
+                return new List<string>();
+            }
+        }
+
+        /// <summary>
         /// 释放资源
         /// </summary>
         public void Dispose()

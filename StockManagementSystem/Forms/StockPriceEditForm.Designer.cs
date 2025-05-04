@@ -60,9 +60,10 @@ namespace StockManagementSystem.Forms
             // lblStock
             // 
             this.lblStock.AutoSize = true;
-            this.lblStock.Location = new System.Drawing.Point(30, 25);
+            this.lblStock.Location = new System.Drawing.Point(45, 38);
+            this.lblStock.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStock.Name = "lblStock";
-            this.lblStock.Size = new System.Drawing.Size(65, 12);
+            this.lblStock.Size = new System.Drawing.Size(98, 18);
             this.lblStock.TabIndex = 0;
             this.lblStock.Text = "选择股票：";
             // 
@@ -70,174 +71,191 @@ namespace StockManagementSystem.Forms
             // 
             this.cboStock.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboStock.FormattingEnabled = true;
-            this.cboStock.Location = new System.Drawing.Point(101, 22);
+            this.cboStock.Location = new System.Drawing.Point(152, 33);
+            this.cboStock.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboStock.Name = "cboStock";
-            this.cboStock.Size = new System.Drawing.Size(200, 20);
+            this.cboStock.Size = new System.Drawing.Size(298, 26);
             this.cboStock.TabIndex = 1;
             // 
             // lblTradeDate
             // 
             this.lblTradeDate.AutoSize = true;
-            this.lblTradeDate.Location = new System.Drawing.Point(30, 60);
+            this.lblTradeDate.Location = new System.Drawing.Point(45, 90);
+            this.lblTradeDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTradeDate.Name = "lblTradeDate";
-            this.lblTradeDate.Size = new System.Drawing.Size(65, 12);
+            this.lblTradeDate.Size = new System.Drawing.Size(98, 18);
             this.lblTradeDate.TabIndex = 2;
             this.lblTradeDate.Text = "交易日期：";
             // 
             // dateTimePickerTradeDate
             // 
-            this.dateTimePickerTradeDate.Location = new System.Drawing.Point(101, 57);
+            this.dateTimePickerTradeDate.Location = new System.Drawing.Point(152, 86);
+            this.dateTimePickerTradeDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dateTimePickerTradeDate.Name = "dateTimePickerTradeDate";
-            this.dateTimePickerTradeDate.Size = new System.Drawing.Size(200, 21);
+            this.dateTimePickerTradeDate.Size = new System.Drawing.Size(298, 28);
             this.dateTimePickerTradeDate.TabIndex = 3;
             // 
             // lblOpenPrice
             // 
             this.lblOpenPrice.AutoSize = true;
-            this.lblOpenPrice.Location = new System.Drawing.Point(30, 95);
+            this.lblOpenPrice.Location = new System.Drawing.Point(45, 142);
+            this.lblOpenPrice.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblOpenPrice.Name = "lblOpenPrice";
-            this.lblOpenPrice.Size = new System.Drawing.Size(65, 12);
+            this.lblOpenPrice.Size = new System.Drawing.Size(80, 18);
             this.lblOpenPrice.TabIndex = 4;
             this.lblOpenPrice.Text = "开盘价：";
             // 
             // numOpenPrice
             // 
             this.numOpenPrice.DecimalPlaces = 2;
-            this.numOpenPrice.Location = new System.Drawing.Point(101, 93);
+            this.numOpenPrice.Location = new System.Drawing.Point(152, 140);
+            this.numOpenPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numOpenPrice.Maximum = new decimal(new int[] {
-            10000,
-            0,
+            -1530494976,
+            232830,
             0,
             0});
             this.numOpenPrice.Name = "numOpenPrice";
-            this.numOpenPrice.Size = new System.Drawing.Size(120, 21);
+            this.numOpenPrice.Size = new System.Drawing.Size(180, 28);
             this.numOpenPrice.TabIndex = 5;
             // 
             // lblClosePrice
             // 
             this.lblClosePrice.AutoSize = true;
-            this.lblClosePrice.Location = new System.Drawing.Point(30, 130);
+            this.lblClosePrice.Location = new System.Drawing.Point(45, 195);
+            this.lblClosePrice.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblClosePrice.Name = "lblClosePrice";
-            this.lblClosePrice.Size = new System.Drawing.Size(65, 12);
+            this.lblClosePrice.Size = new System.Drawing.Size(80, 18);
             this.lblClosePrice.TabIndex = 6;
             this.lblClosePrice.Text = "收盘价：";
             // 
             // numClosePrice
             // 
             this.numClosePrice.DecimalPlaces = 2;
-            this.numClosePrice.Location = new System.Drawing.Point(101, 128);
+            this.numClosePrice.Location = new System.Drawing.Point(152, 192);
+            this.numClosePrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numClosePrice.Maximum = new decimal(new int[] {
-            10000,
-            0,
+            -1530494976,
+            232830,
             0,
             0});
             this.numClosePrice.Name = "numClosePrice";
-            this.numClosePrice.Size = new System.Drawing.Size(120, 21);
+            this.numClosePrice.Size = new System.Drawing.Size(180, 28);
             this.numClosePrice.TabIndex = 7;
             this.numClosePrice.ValueChanged += new System.EventHandler(this.numClosePrice_ValueChanged);
             // 
             // lblHighPrice
             // 
             this.lblHighPrice.AutoSize = true;
-            this.lblHighPrice.Location = new System.Drawing.Point(30, 165);
+            this.lblHighPrice.Location = new System.Drawing.Point(45, 248);
+            this.lblHighPrice.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblHighPrice.Name = "lblHighPrice";
-            this.lblHighPrice.Size = new System.Drawing.Size(65, 12);
+            this.lblHighPrice.Size = new System.Drawing.Size(80, 18);
             this.lblHighPrice.TabIndex = 8;
             this.lblHighPrice.Text = "最高价：";
             // 
             // numHighPrice
             // 
             this.numHighPrice.DecimalPlaces = 2;
-            this.numHighPrice.Location = new System.Drawing.Point(101, 163);
+            this.numHighPrice.Location = new System.Drawing.Point(152, 244);
+            this.numHighPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numHighPrice.Maximum = new decimal(new int[] {
-            10000,
-            0,
+            -1530494976,
+            232830,
             0,
             0});
             this.numHighPrice.Name = "numHighPrice";
-            this.numHighPrice.Size = new System.Drawing.Size(120, 21);
+            this.numHighPrice.Size = new System.Drawing.Size(180, 28);
             this.numHighPrice.TabIndex = 9;
             this.numHighPrice.ValueChanged += new System.EventHandler(this.numHighPrice_ValueChanged);
             // 
             // lblLowPrice
             // 
             this.lblLowPrice.AutoSize = true;
-            this.lblLowPrice.Location = new System.Drawing.Point(30, 200);
+            this.lblLowPrice.Location = new System.Drawing.Point(45, 300);
+            this.lblLowPrice.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblLowPrice.Name = "lblLowPrice";
-            this.lblLowPrice.Size = new System.Drawing.Size(65, 12);
+            this.lblLowPrice.Size = new System.Drawing.Size(80, 18);
             this.lblLowPrice.TabIndex = 10;
             this.lblLowPrice.Text = "最低价：";
             // 
             // numLowPrice
             // 
             this.numLowPrice.DecimalPlaces = 2;
-            this.numLowPrice.Location = new System.Drawing.Point(101, 198);
+            this.numLowPrice.Location = new System.Drawing.Point(152, 297);
+            this.numLowPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numLowPrice.Maximum = new decimal(new int[] {
-            10000,
-            0,
+            -1530494976,
+            232830,
             0,
             0});
             this.numLowPrice.Name = "numLowPrice";
-            this.numLowPrice.Size = new System.Drawing.Size(120, 21);
+            this.numLowPrice.Size = new System.Drawing.Size(180, 28);
             this.numLowPrice.TabIndex = 11;
             this.numLowPrice.ValueChanged += new System.EventHandler(this.numLowPrice_ValueChanged);
             // 
             // lblVolume
             // 
             this.lblVolume.AutoSize = true;
-            this.lblVolume.Location = new System.Drawing.Point(30, 235);
+            this.lblVolume.Location = new System.Drawing.Point(45, 352);
+            this.lblVolume.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblVolume.Name = "lblVolume";
-            this.lblVolume.Size = new System.Drawing.Size(65, 12);
+            this.lblVolume.Size = new System.Drawing.Size(80, 18);
             this.lblVolume.TabIndex = 12;
             this.lblVolume.Text = "成交量：";
             // 
             // numVolume
             // 
-            this.numVolume.Location = new System.Drawing.Point(101, 233);
+            this.numVolume.Location = new System.Drawing.Point(152, 350);
+            this.numVolume.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numVolume.Maximum = new decimal(new int[] {
-            1000000000,
-            0,
+            -1530494976,
+            232830,
             0,
             0});
             this.numVolume.Name = "numVolume";
-            this.numVolume.Size = new System.Drawing.Size(120, 21);
+            this.numVolume.Size = new System.Drawing.Size(180, 28);
             this.numVolume.TabIndex = 13;
             // 
             // lblAmount
             // 
             this.lblAmount.AutoSize = true;
-            this.lblAmount.Location = new System.Drawing.Point(30, 270);
+            this.lblAmount.Location = new System.Drawing.Point(45, 405);
+            this.lblAmount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAmount.Name = "lblAmount";
-            this.lblAmount.Size = new System.Drawing.Size(65, 12);
+            this.lblAmount.Size = new System.Drawing.Size(80, 18);
             this.lblAmount.TabIndex = 14;
             this.lblAmount.Text = "成交额：";
             // 
             // numAmount
             // 
             this.numAmount.DecimalPlaces = 2;
-            this.numAmount.Location = new System.Drawing.Point(101, 268);
+            this.numAmount.Location = new System.Drawing.Point(152, 402);
+            this.numAmount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numAmount.Maximum = new decimal(new int[] {
-            100000000,
-            0,
+            -1530494976,
+            232830,
             0,
             0});
             this.numAmount.Name = "numAmount";
-            this.numAmount.Size = new System.Drawing.Size(120, 21);
+            this.numAmount.Size = new System.Drawing.Size(180, 28);
             this.numAmount.TabIndex = 15;
             // 
             // lblChangePercent
             // 
             this.lblChangePercent.AutoSize = true;
-            this.lblChangePercent.Location = new System.Drawing.Point(30, 305);
+            this.lblChangePercent.Location = new System.Drawing.Point(45, 458);
+            this.lblChangePercent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblChangePercent.Name = "lblChangePercent";
-            this.lblChangePercent.Size = new System.Drawing.Size(65, 12);
+            this.lblChangePercent.Size = new System.Drawing.Size(80, 18);
             this.lblChangePercent.TabIndex = 16;
             this.lblChangePercent.Text = "涨跌幅：";
             // 
             // numChangePercent
             // 
             this.numChangePercent.DecimalPlaces = 2;
-            this.numChangePercent.Location = new System.Drawing.Point(101, 303);
+            this.numChangePercent.Location = new System.Drawing.Point(152, 454);
+            this.numChangePercent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numChangePercent.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -249,14 +267,15 @@ namespace StockManagementSystem.Forms
             0,
             -2147483648});
             this.numChangePercent.Name = "numChangePercent";
-            this.numChangePercent.Size = new System.Drawing.Size(120, 21);
+            this.numChangePercent.Size = new System.Drawing.Size(180, 28);
             this.numChangePercent.TabIndex = 17;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(101, 350);
+            this.btnSave.Location = new System.Drawing.Point(152, 525);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.Size = new System.Drawing.Size(112, 34);
             this.btnSave.TabIndex = 18;
             this.btnSave.Text = "保存";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -264,9 +283,10 @@ namespace StockManagementSystem.Forms
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(226, 350);
+            this.btnCancel.Location = new System.Drawing.Point(339, 525);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(112, 34);
             this.btnCancel.TabIndex = 19;
             this.btnCancel.Text = "取消";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -274,9 +294,9 @@ namespace StockManagementSystem.Forms
             // 
             // StockPriceEditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 411);
+            this.ClientSize = new System.Drawing.Size(651, 616);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.numChangePercent);
@@ -298,6 +318,7 @@ namespace StockManagementSystem.Forms
             this.Controls.Add(this.cboStock);
             this.Controls.Add(this.lblStock);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "StockPriceEditForm";

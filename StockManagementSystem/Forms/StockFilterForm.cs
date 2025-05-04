@@ -63,9 +63,11 @@ namespace StockManagementSystem
         private void LoadIndustries()
         {
             // 获取所有行业
-            var allStocks = _stockService.GetAllStocks();
-            var industries = allStocks.Select(s => s.Industry).Where(i => !string.IsNullOrEmpty(i)).Distinct().OrderBy(i => i).ToList();
+            // var allStocks = _stockService.GetAllStocks();
+            // var industries = allStocks.Select(s => s.Industry).Where(i => !string.IsNullOrEmpty(i)).Distinct().OrderBy(i => i).ToList();
 
+            var industries = _stockService.GetAllIndustries();
+            
             // 添加"全部"选项
             cboIndustry.Items.Add("全部");
 

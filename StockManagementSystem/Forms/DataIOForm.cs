@@ -55,8 +55,6 @@ namespace StockManagementSystem.Forms
             progressBarImport.Visible = false;
             progressBarImport.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             groupBoxImport.Controls.Add(progressBarImport);
-
-            // 调整groupBoxImport的大小以容纳进度条
             groupBoxImport.Height = 100;
         }
 
@@ -73,11 +71,9 @@ namespace StockManagementSystem.Forms
                 // 更新进度条
                 progressBarImport.Maximum = total;
                 progressBarImport.Value = current;
-
                 // 更新状态栏
                 double percentage = (double)current / total * 100;
                 UpdateStatus($"{operation}: {current}/{total} ({percentage:F1}%)");
-
                 // 刷新界面
                 Application.DoEvents();
             }
@@ -112,21 +108,16 @@ namespace StockManagementSystem.Forms
                     MessageBox.Show("没有股票数据可以导出！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-
                 // 设置保存对话框
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "CSV文件(*.csv)|*.csv|所有文件(*.*)|*.*";
                 saveFileDialog.Title = "导出股票数据";
                 saveFileDialog.FileName = $"股票数据_{DateTime.Now:yyyyMMdd}";
-
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    // 构建CSV内容
                     StringBuilder sb = new StringBuilder();
-
                     // 添加表头
                     sb.AppendLine("ID,股票代码,股票名称,股票类型,所属行业,上市日期,描述");
-
                     // 添加数据行
                     foreach (var stock in stocks)
                     {
@@ -135,13 +126,10 @@ namespace StockManagementSystem.Forms
                         string description = stock.Description?.Replace(",", " ") ?? "";
                         // 在股票代码前添加等号和引号，确保Excel将其视为文本并保留前导零
                         string formattedCode = $"=\"{stock.Code}\"";
-
                         sb.AppendLine($"{stock.StockId},{formattedCode},{stock.Name},{stock.Type},{stock.Industry},{formattedDate},{description}");
                     }
-
                     // 写入文件
                     File.WriteAllText(saveFileDialog.FileName, sb.ToString(), Encoding.UTF8);
-
                     // 更新状态
                     UpdateStatus($"成功导出 {stocks.Count} 条股票数据到 {saveFileDialog.FileName}");
                     MessageBox.Show($"成功导出 {stocks.Count} 条股票数据！\n\n提示：如果在Excel中打开时日期显示异常，请先选择该列然后调整列宽。", "导出成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -161,13 +149,11 @@ namespace StockManagementSystem.Forms
                 // 获取日期范围
                 DateTime startDate = dateTimePickerStart.Value.Date;
                 DateTime endDate = dateTimePickerEnd.Value.Date;
-
                 if (startDate > endDate)
                 {
                     MessageBox.Show("开始日期不能大于结束日期！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-
                 // 获取指定日期范围内的股票价格数据
                 List<StockPrice> prices;
                 if (checkBoxAllPrices.Checked)
@@ -179,30 +165,24 @@ namespace StockManagementSystem.Forms
                 {
                     prices = _stockPriceService.GetStockPrices(null, startDate, endDate);
                 }
-
                 if (prices.Count == 0)
                 {
                     MessageBox.Show("没有符合条件的股票价格数据可以导出！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-
                 // 设置保存对话框
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "CSV文件(*.csv)|*.csv|所有文件(*.*)|*.*";
                 saveFileDialog.Title = "导出股票价格数据";
                 saveFileDialog.FileName = $"股票价格数据_{startDate:yyyyMMdd}_to_{endDate:yyyyMMdd}";
-
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     // 构建CSV内容
                     StringBuilder sb = new StringBuilder();
-
                     // 添加表头
                     sb.AppendLine("股票ID,股票代码,交易日期,开盘价,收盘价,最高价,最低价,成交量,成交额,涨跌幅");
-
                     // 获取所有股票信息（用于查找代码）
                     var stocks = _stockService.GetAllStocks().ToDictionary(s => s.StockId, s => s);
-
                     // 添加数据行
                     foreach (var price in prices)
                     {
@@ -247,7 +227,6 @@ namespace StockManagementSystem.Forms
                 {
                     // 读取文件内容 - 使用更高效的方式读取大文件
                     UpdateStatus("正在读取文件...");
-
                     // 检查并估算文件大小
                     FileInfo fileInfo = new FileInfo(openFileDialog.FileName);
                     if (fileInfo.Length > 10 * 1024 * 1024) // 如果大于10MB
@@ -258,12 +237,10 @@ namespace StockManagementSystem.Forms
                             return;
                         }
                     }
-
                     // 增加进度显示
                     progressBarImport.Visible = true;
                     progressBarImport.Style = ProgressBarStyle.Marquee;
                     UpdateStatus("正在读取文件内容...");
-
                     // 读取文件内容
                     List<string> lines = new List<string>();
                     using (StreamReader reader = new StreamReader(openFileDialog.FileName, Encoding.UTF8))
@@ -279,14 +256,12 @@ namespace StockManagementSystem.Forms
                             }
                         }
                     }
-
                     if (lines.Count <= 1)
                     {
                         progressBarImport.Visible = false;
                         MessageBox.Show("文件中没有有效的股票数据！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-
                     // 检查表头
                     string header = lines[0].Trim();
                     // 支持原格式和新格式
@@ -297,45 +272,34 @@ namespace StockManagementSystem.Forms
                         MessageBox.Show("文件格式不正确！请确保文件包含正确的表头。", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-
                     // 确定表头格式类型
                     bool isNewFormat = header.StartsWith("Code,Name,Type");
-
                     // 获取现有的股票代码列表（用于检查重复）
                     UpdateStatus("正在检查现有股票数据...");
                     var existingStocks = _stockService.GetAllStocks();
                     var existingCodes = existingStocks.Select(s => s.Code).ToHashSet();
-
                     // 显示并初始化进度条
                     progressBarImport.Style = ProgressBarStyle.Continuous;
                     int totalCount = lines.Count - 1; // 减去表头
                     UpdateProgress(0, totalCount, "正在解析股票数据");
-
                     // 使用并行处理解析数据
                     ConcurrentBag<Stock> stocksToAdd = new ConcurrentBag<Stock>();
                     int skippedCount = 0;
-
-                    // 使用并行处理加速解析，但不使用太多线程以避免过度消耗内存
                     int maxDegreeOfParallelism = Math.Min(Environment.ProcessorCount, 4);
-
                     // 分批处理以减少内存压力
                     for (int batchStart = 1; batchStart < lines.Count; batchStart += BATCH_SIZE)
                     {
                         int batchEnd = Math.Min(batchStart + BATCH_SIZE, lines.Count);
                         int batchSize = batchEnd - batchStart;
-
                         UpdateStatus($"正在解析第 {batchStart}-{batchEnd - 1} 行数据...");
-
                         // 创建临时存储解析结果的列表
                         List<Stock> batchStocks = new List<Stock>();
                         int batchSkipped = 0;
-
                         // 使用并行处理加速解析
                         Parallel.For(batchStart, batchEnd, new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism }, i =>
                         {
                             string line = lines[i].Trim();
                             if (string.IsNullOrEmpty(line)) return;
-
                             try
                             {
                                 // 解析CSV行
@@ -389,14 +353,12 @@ namespace StockManagementSystem.Forms
                                         description = fields[6].Trim();
                                     }
                                 }
-
                                 // 检查是否已存在
                                 if (existingCodes.Contains(code))
                                 {
                                     Interlocked.Increment(ref batchSkipped);
                                     return;
                                 }
-
                                 // 创建股票对象
                                 Stock stock = new Stock
                                 {
@@ -421,38 +383,31 @@ namespace StockManagementSystem.Forms
                                 Interlocked.Increment(ref batchSkipped);
                             }
                         });
-
                         // 更新进度
                         UpdateProgress(batchEnd - 1, totalCount, "正在解析股票数据");
-
                         // 将批次处理的结果合并到总结果中
                         foreach (var stock in batchStocks)
                         {
                             stocksToAdd.Add(stock);
                         }
                         skippedCount += batchSkipped;
-
                         // 释放批次内存
                         batchStocks.Clear();
                     }
 
                     int importedCount = stocksToAdd.Count;
-
                     // 批量添加股票
                     if (stocksToAdd.Count > 0)
                     {
                         UpdateStatus("正在保存股票数据到数据库...");
                         int savedCount = 0;
-
                         // 将并发包转换为列表并排序以确保一致性
                         List<Stock> orderedStocks = stocksToAdd.ToList();
-
                         // 显示并更新进度条设置
                         progressBarImport.Visible = true;
                         progressBarImport.Style = ProgressBarStyle.Continuous;
                         progressBarImport.Maximum = orderedStocks.Count;
                         progressBarImport.Value = 0;
-
                         // 批量保存，使用事务提高性能，并添加进度回调
                         savedCount = _stockService.AddStocksBatch(
                             orderedStocks,
@@ -464,13 +419,13 @@ namespace StockManagementSystem.Forms
                                     this.Invoke(new Action(() =>
                                     {
                                         UpdateProgress(current, total, "正在保存股票数据到数据库");
-                                        Application.DoEvents(); // 使UI保持响应
+                                        Application.DoEvents();
                                     }));
                                 }
                                 else
                                 {
                                     UpdateProgress(current, total, "正在保存股票数据到数据库");
-                                    Application.DoEvents(); // 使UI保持响应
+                                    Application.DoEvents();
                                 }
                             });
 
@@ -523,12 +478,10 @@ namespace StockManagementSystem.Forms
                             return;
                         }
                     }
-
                     // 增加进度显示
                     progressBarImport.Visible = true;
                     progressBarImport.Style = ProgressBarStyle.Marquee;
                     UpdateStatus("正在读取文件内容...");
-
                     // 高效读取文件内容
                     List<string> lines = new List<string>();
                     using (StreamReader reader = new StreamReader(openFileDialog.FileName, Encoding.UTF8))
@@ -544,14 +497,12 @@ namespace StockManagementSystem.Forms
                             }
                         }
                     }
-
                     if (lines.Count <= 1)
                     {
                         progressBarImport.Visible = false;
                         MessageBox.Show("文件中没有有效的股票价格数据！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-
                     // 检查表头
                     string header = lines[0].Trim();
                     // 支持原格式和新格式
@@ -577,7 +528,6 @@ namespace StockManagementSystem.Forms
 
                     // 使用并发字典来存储索引，提高并发性能
                     ConcurrentDictionary<Tuple<int, DateTime>, bool> existingPriceKeys = new ConcurrentDictionary<Tuple<int, DateTime>, bool>();
-
                     // 分批加载现有价格数据，以降低内存压力
                     var stockIds = stocks.Select(s => s.StockId).ToList();
                     foreach (var stockIdBatch in BatchList(stockIds, 50))
@@ -589,30 +539,23 @@ namespace StockManagementSystem.Forms
                             existingPriceKeys[new Tuple<int, DateTime>(price.Item1, price.Item2.Date)] = true;
                         }
                     }
-
                     // 显示并初始化进度条
                     progressBarImport.Style = ProgressBarStyle.Continuous;
                     int totalCount = lines.Count - 1; // 减去表头
                     UpdateProgress(0, totalCount, "正在解析数据");
-
                     // 使用并行处理解析数据
                     ConcurrentBag<StockPrice> pricesToAdd = new ConcurrentBag<StockPrice>();
                     int skippedCount = 0;
-
                     // 使用并行处理加速解析，但不使用太多线程以避免过度消耗内存
                     int maxDegreeOfParallelism = Math.Min(Environment.ProcessorCount, 4);
-
                     // 分批处理解析，降低内存压力
                     for (int batchStart = 1; batchStart < lines.Count; batchStart += BATCH_SIZE)
                     {
                         int batchEnd = Math.Min(batchStart + BATCH_SIZE, lines.Count);
-
                         UpdateStatus($"正在解析第 {batchStart}-{batchEnd - 1} 行数据...");
-
                         // 创建临时存储解析结果的列表
                         List<StockPrice> batchPrices = new List<StockPrice>();
                         int batchSkipped = 0;
-
                         // 使用并行处理加速解析
                         Parallel.For(batchStart, batchEnd, new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism }, i =>
                         {
@@ -860,16 +803,13 @@ namespace StockManagementSystem.Forms
         {
             if (string.IsNullOrEmpty(line))
                 return new string[0];
-
             List<string> results = new List<string>();
             bool inQuotes = false;
             StringBuilder field = new StringBuilder();
-
             // 遍历每个字符
             for (int i = 0; i < line.Length; i++)
             {
                 char c = line[i];
-
                 // 处理引号
                 if (c == '"')
                 {
@@ -942,7 +882,6 @@ namespace StockManagementSystem.Forms
             }
             catch
             {
-                // 解析失败，继续尝试其他格式
             }
 
             // 尝试其他常见格式
@@ -991,10 +930,5 @@ namespace StockManagementSystem.Forms
         }
 
         #endregion
-
-        // private void button1_Click(object sender, EventArgs e)
-        // {
-
-        // }
     }
 }

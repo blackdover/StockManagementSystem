@@ -18,8 +18,7 @@ namespace StockManagementSystem
         private readonly StockPriceService _stockPriceService;
         // 股票图表控件
         private System.Windows.Forms.DataVisualization.Charting.Chart stockChart;
-
-        // 股票价格数据缓存，提高性能
+        // 股票价格数据缓存
         private Dictionary<int, List<StockPrice>> _priceCache = new Dictionary<int, List<StockPrice>>();
         // 当前选中的股票ID
         private int _currentStockId = -1;

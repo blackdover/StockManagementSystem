@@ -122,7 +122,7 @@ namespace StockManagementSystem.Forms
             this.btnExportPrices.Name = "btnExportPrices";
             this.btnExportPrices.Size = new System.Drawing.Size(214, 34);
             this.btnExportPrices.TabIndex = 1;
-            this.btnExportPrices.Text = "导出股票价格数据";
+            this.btnExportPrices.Text = "导出股票行情数据";
             this.btnExportPrices.UseVisualStyleBackColor = true;
             this.btnExportPrices.Click += new System.EventHandler(this.btnExportPrices_Click);
             // 
@@ -133,7 +133,7 @@ namespace StockManagementSystem.Forms
             this.btnExportStocks.Name = "btnExportStocks";
             this.btnExportStocks.Size = new System.Drawing.Size(214, 34);
             this.btnExportStocks.TabIndex = 0;
-            this.btnExportStocks.Text = "导出股票基本信息";
+            this.btnExportStocks.Text = "导出股票基本数据";
             this.btnExportStocks.UseVisualStyleBackColor = true;
             this.btnExportStocks.Click += new System.EventHandler(this.btnExportStocks_Click);
             // 
@@ -159,7 +159,7 @@ namespace StockManagementSystem.Forms
             this.btnImportPrices.Name = "btnImportPrices";
             this.btnImportPrices.Size = new System.Drawing.Size(214, 34);
             this.btnImportPrices.TabIndex = 1;
-            this.btnImportPrices.Text = "导入股票价格数据";
+            this.btnImportPrices.Text = "导入股票行情数据";
             this.btnImportPrices.UseVisualStyleBackColor = true;
             this.btnImportPrices.Click += new System.EventHandler(this.btnImportPrices_Click);
             // 
@@ -170,7 +170,7 @@ namespace StockManagementSystem.Forms
             this.btnImportStocks.Name = "btnImportStocks";
             this.btnImportStocks.Size = new System.Drawing.Size(214, 34);
             this.btnImportStocks.TabIndex = 0;
-            this.btnImportStocks.Text = "导入股票基本信息";
+            this.btnImportStocks.Text = "导入股票基本数据";
             this.btnImportStocks.UseVisualStyleBackColor = true;
             this.btnImportStocks.Click += new System.EventHandler(this.btnImportStocks_Click);
             // 
